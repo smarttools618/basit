@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بسيط - وداعاً للتعقيد</title>
-    <link rel="stylesheet" href="style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -21,19 +23,34 @@
                     <h2 class="form-title">انضم إلى عالم بسيط</h2>
                     <p class="form-subtitle">أنشئ حسابك وابدأ رحلة التعلم الممتعة.</p>
                     <form id="signup-form">
-                        <input type="text" placeholder="الاسم" required>
-                        <input type="text" placeholder="اللقب" required>
-                        <input type="email" placeholder="البريد الإلكتروني" required>
-                        <input type="password" placeholder="كلمة السر" required>
-                        <select required>
-                            <option value="" disabled selected>اختر المستوى الدراسي</option>
-                            <option value="1">السنة الأولى ابتدائي</option>
-                            <option value="2">السنة الثانية ابتدائي</option>
-                            <option value="3">السنة الثالثة ابتدائي</option>
-                            <option value="4">السنة الرابعة ابتدائي</option>
-                            <option value="5">السنة الخامسة ابتدائي</option>
-                            <option value="6">السنة السادسة ابتدائي</option>
-                        </select>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" placeholder="الاسم" required>
+                        </div>
+                        <div class="input-with-icon">
+                             <i class="fa-solid fa-user-tag"></i>
+                            <input type="text" placeholder="اللقب" required>
+                        </div>
+                        <div class="input-with-icon">
+                             <i class="fa-solid fa-envelope"></i>
+                            <input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="كلمة السر" required>
+                        </div>
+                        <div class="input-with-icon">
+                             <i class="fa-solid fa-graduation-cap"></i>
+                            <select required>
+                                <option value="" disabled selected>اختر المستوى الدراسي</option>
+                                <option value="1">السنة الأولى ابتدائي</option>
+                                <option value="2">السنة الثانية ابتدائي</option>
+                                <option value="3">السنة الثالثة ابتدائي</option>
+                                <option value="4">السنة الرابعة ابتدائي</option>
+                                <option value="5">السنة الخامسة ابتدائي</option>
+                                <option value="6">السنة السادسة ابتدائي</option>
+                            </select>
+                        </div>
                         <button type="submit">إنشاء حساب</button>
                     </form>
                     <p class="switch-form">لديك حساب بالفعل؟ <a href="#" id="goto-login">تسجيل الدخول</a></p>
@@ -46,8 +63,14 @@
                     <h2 class="form-title">أهلاً بعودتك!</h2>
                     <p class="form-subtitle">سجل دخولك لتكمل رحلتك التعليمية.</p>
                     <form id="login-form">
-                        <input type="email" placeholder="البريد الإلكتروني" required>
-                        <input type="password" placeholder="كلمة السر" required>
+                        <div class="input-with-icon">
+                             <i class="fa-solid fa-envelope"></i>
+                            <input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                         <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="كلمة السر" required>
+                        </div>
                         <button type="submit">تسجيل الدخول</button>
                     </form>
                     <div class="form-links">
@@ -63,7 +86,10 @@
                     <h2 class="form-title">إعادة تعيين كلمة السر</h2>
                     <p class="form-subtitle">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة التعيين.</p>
                     <form id="forgot-password-form">
-                        <input type="email" placeholder="البريد الإلكتروني" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
                         <button type="submit">إرسال الرابط</button>
                     </form>
                     <p class="switch-form"><a href="#" id="back-to-login-1">العودة لتسجيل الدخول</a></p>
@@ -74,8 +100,14 @@
                  <div class="form-container">
                     <h2 class="form-title">اختر كلمة سر جديدة</h2>
                     <form id="reset-password-form">
-                        <input type="password" placeholder="كلمة السر الجديدة" required>
-                        <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="كلمة السر الجديدة" required>
+                        </div>
+                         <div class="input-with-icon">
+                            <i class="fa-solid fa-check-double"></i>
+                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
+                        </div>
                         <button type="submit">تغيير كلمة السر</button>
                     </form>
                 </div>
@@ -87,21 +119,14 @@
             <div class="branding-content">
                 <h1>بسيط</h1>
                 <p class="slogan">وداعاً للتعقيد، ومرحباً بالمعرفة.</p>
-                <div class="illustration">
-                    <!-- SVG Illustration from unDraw -->
-                    <svg viewBox="0 0 573 487" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M573 219.782C573 219.782 506.908 243.782 466.864 219.782C426.82 195.782 406.49 133.583 365.136 126.782C323.782 119.982 291.636 179.887 253.182 185.887C214.727 191.887 195.727 151.083 154.364 154.387C113 157.69 82.2273 203.887 43.7727 203.887C5.31818 203.887 0 219.782 0 219.782V487H573V219.782Z" fill="#4A90E2"></path><path d="M518.5 220V487H573V220H518.5Z" fill="#357ACE"></path><path d="M305 285.501C305 285.501 270.364 263.364 270.364 219.5C270.364 175.636 305 153.5 305 153.5L343.818 175.636V263.364L305 285.501Z" fill="#F8F9FA"></path><path d="M305 285.5L343.818 263.364V175.636L305 153.5V285.5Z" fill="#E1E6EB"></path><rect x="189" y="328" width="189" height="159" rx="8" fill="#F8F9FA"></rect><rect x="189" y="445" width="189" height="18" fill="#E1E6EB"></rect><path d="M211 354H345V366H211V354Z" fill="#4A90E2"></path><path d="M211 385H345V397H211V385Z" fill="#4A90E2"></path><path d="M211 416H280V428H211V416Z" fill="#4A90E2"></path><path d="M433 371.189C433 371.189 406.818 354.189 406.818 321C406.818 287.811 433 270.811 433 270.811L458.727 287.811V354.189L433 371.189Z" fill="#F8F9FA"></path><path d="M433 371.189L458.727 354.189V287.811L433 270.811V371.189Z" fill="#E1E6EB"></path><path d="M96 360C96 323.745 125.745 294 162 294V360H96Z" fill="#F5A623"></path><path d="M162 360V294C198.255 294 228 323.745 228 360H162Z" fill="#F8B852"></path><path d="M162 432C198.255 432 228 402.255 228 366H96C96 402.255 125.745 432 162 432Z" fill="#F8F9FA"></path><path d="M96 366H228V376H96V366Z" fill="#E1E6EB"></path></g></svg>
-                </div>
+                <i class="fa-solid fa-book-open fa-5x" style="color: #fff; margin: 0;"></i>
             </div>
         </div>
     </div>
     
-    <!-- هذه العناصر تبقى كما هي لاستخدامها في JS -->
-    <div id="offer-page" class="page">
-        <!-- كود صفحة العروض يوضع هنا -->
-    </div>
-    <div id="success-popup" class="popup-container">
-        <!-- كود الرسالة المنبثقة يوضع هنا -->
-    </div>
+    <!-- باقي العناصر تبقى كما هي -->
+    <div id="offer-page" class="page"></div>
+    <div id="success-popup" class="popup-container"></div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

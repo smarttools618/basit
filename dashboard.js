@@ -5,8 +5,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
-// --- العناصر الرئيسية في الصفحة ---
+// --- عناصر الواجهة ---
 const adminNameEl = document.getElementById('admin-name');
 const adminRoleEl = document.getElementById('admin-role');
 const logoutBtn = document.getElementById('logout-btn');
@@ -15,29 +14,27 @@ const statsSection = document.getElementById('stats-section');
 const requestsSection = document.getElementById('requests-section');
 const usersSection = document.getElementById('users-section');
 
-
 // --- وظيفة عند تحميل الصفحة ---
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. تحقق من وجود مستخدم مسجل دخوله
     const { data: { user } } = await supabaseClient.auth.getUser();
 
     if (!user) {
-        // إذا لم يكن هناك مستخدم، أعده إلى صفحة الدخول الرئيسية
         alert('يرجى تسجيل الدخول أولاً.');
-        window.location.href = 'index.html'; // افترض أن صفحة الدخول اسمها index.html
+        window.location.href = 'index.html';
         return;
     }
 
     // 2. تحقق من أن هذا المستخدم موجود في جدول الـ admins
     const { data: adminData, error } = await supabaseClient
         .from('admins')
-        .select('role, full_name') // جلب الدور والاسم
+        .select('role, full_name')
         .eq('user_id', user.id)
-        .single(); // .single() لأنه يجب أن يكون هناك مشرف واحد فقط بهذا الـ user_id
+        .single();
 
     if (error || !adminData) {
-        // إذا لم يكن المستخدم مشرفًا، اعرض رسالة خطأ وأعده
         alert('ليس لديك صلاحية الوصول لهذه الصفحة.');
+        await supabaseClient.auth.signOut(); // تسجيل الخروج للأمان
         window.location.href = 'index.html';
         return;
     }
@@ -52,60 +49,172 @@ document.addEventListener('DOMContentLoaded', async () => {
     buildDashboard(adminRole);
 });
 
-
 // --- وظيفة بناء الواجهة حسب الدور ---
 function buildDashboard(role) {
     if (role === 'super_admin') {
-        // صاحب الموقع يرى كل شيء
         statsSection.classList.remove('hidden');
         requestsSection.classList.remove('hidden');
         usersSection.classList.remove('hidden');
-
-        // استدعاء وظائف تحميل البيانات
         loadStats();
         loadSubscriptionRequests();
         loadAllUsers();
 
     } else if (role === 'assistant') {
-        // المساعد يرى فقط طلبات الاشتراك
         requestsSection.classList.remove('hidden');
-
-        // استدعاء وظيفة تحميل طلبات الاشتراك فقط
         loadSubscriptionRequests();
     }
 }
 
-
-// --- وظائف تحميل البيانات (نماذج أولية) ---
+// --- وظائف تحميل البيانات الحقيقية ---
 
 async function loadStats() {
-    console.log("جاري تحميل الإحصائيات...");
-    // هنا ستكتب كود جلب الإحصائيات من Supabase
-    document.getElementById('stats-content').innerHTML = '<p>إجمالي المستخدمين: ...</p><p>الاشتراكات المدفوعة: ...</p>';
+    const statsGrid = document.getElementById('stats-grid');
+    statsGrid.innerHTML = '<div class="loading">جاري تحميل الإحصائيات...</div>';
+
+    // جلب عدد كل المستخدمين
+    const { count: totalUsers, error: totalError } = await supabaseClient
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+    // جلب عدد المشتركين في الباقة المدفوعة
+    const { count: paidUsers, error: paidError } = await supabaseClient
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .eq('subscription_status', 'paid');
+    
+    if(totalError || paidError) {
+        statsGrid.innerHTML = '<p>حدث خطأ في جلب الإحصائيات.</p>';
+        console.error(totalError || paidError);
+        return;
+    }
+
+    statsGrid.innerHTML = `
+        <div class="stat-card">
+            <h4>إجمالي المستخدمين</h4>
+            <p>${totalUsers}</p>
+        </div>
+        <div class="stat-card">
+            <h4>الاشتراكات المدفوعة</h4>
+            <p>${paidUsers}</p>
+        </div>
+         <div class="stat-card">
+            <h4>النسبة المئوية للمدفوع</h4>
+            <p>%${totalUsers > 0 ? ((paidUsers / totalUsers) * 100).toFixed(1) : 0}</p>
+        </div>
+    `;
 }
 
 async function loadSubscriptionRequests() {
-    console.log("جاري تحميل طلبات الاشتراك...");
-    // هنا ستكتب كود جلب المستخدمين الذين ينتظرون الموافقة
-     document.getElementById('requests-table-body').innerHTML = `
+    const tableBody = document.getElementById('requests-table-body');
+    tableBody.innerHTML = '<tr><td colspan="4" class="loading">جاري تحميل الطلبات...</td></tr>';
+    
+    // جلب المستخدمين الذين ينتظرون الموافقة (pending_paid)
+    const { data: requests, error } = await supabaseClient
+        .from('profiles')
+        .select('id, full_name, email, created_at')
+        .eq('subscription_status', 'pending_paid');
+
+    if (error) {
+        tableBody.innerHTML = '<tr><td colspan="4">خطأ في تحميل الطلبات.</td></tr>';
+        console.error(error);
+        return;
+    }
+
+    if (requests.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">لا توجد طلبات اشتراك جديدة حالياً.</td></tr>';
+        return;
+    }
+
+    tableBody.innerHTML = requests.map(req => `
         <tr>
-            <td>اسم مستخدم تجريبي</td>
-            <td>test@example.com</td>
-            <td>2023-10-27</td>
-            <td><button>تأكيد الاشتراك</button></td>
+            <td>${req.full_name}</td>
+            <td>${req.email}</td>
+            <td>${new Date(req.created_at).toLocaleDateString('ar-EG')}</td>
+            <td><button class="action-btn" data-userid="${req.id}">تأكيد الاشتراك</button></td>
         </tr>
-     `;
+    `).join('');
 }
 
 async function loadAllUsers() {
-    console.log("جاري تحميل كل المستخدمين...");
-    // هنا ستكتب كود جلب كل المستخدمين وعرضهم في جدول
-    document.getElementById('users-content').innerHTML = '<p>جدول كل المستخدمين سيظهر هنا...</p>';
+    const tableBody = document.getElementById('users-table-body');
+    tableBody.innerHTML = '<tr><td colspan="4" class="loading">جاري تحميل المستخدمين...</td></tr>';
+    
+    const { data: users, error } = await supabaseClient
+        .from('profiles')
+        .select('full_name, email, subscription_status, created_at')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        tableBody.innerHTML = '<tr><td colspan="4">خطأ في تحميل المستخدمين.</td></tr>';
+        console.error(error);
+        return;
+    }
+
+    if (users.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">لا يوجد مستخدمون مسجلون بعد.</td></tr>';
+        return;
+    }
+
+    const statusMap = {
+        'paid': { text: 'مدفوع', class: 'status-paid' },
+        'free': { text: 'مجاني', class: 'status-free' },
+        'pending_paid': { text: 'بانتظار الموافقة', class: 'status-pending' },
+        'none': { text: 'لم يختر', class: 'status-free' }
+    };
+
+    tableBody.innerHTML = users.map(user => `
+        <tr>
+            <td>${user.full_name}</td>
+            <td>${user.email}</td>
+            <td>
+                <span class="status-badge ${statusMap[user.subscription_status]?.class || 'status-free'}">
+                    ${statusMap[user.subscription_status]?.text || 'غير محدد'}
+                </span>
+            </td>
+            <td>${new Date(user.created_at).toLocaleDateString('ar-EG')}</td>
+        </tr>
+    `).join('');
 }
 
+// --- وظيفة لتأكيد الاشتراك ---
+async function approveSubscription(userId) {
+    // حساب تاريخ انتهاء الاشتراك (شهر من الآن)
+    const subscriptionEndDate = new Date();
+    subscriptionEndDate.setMonth(subscriptionEndDate.getMonth() + 1);
 
-// --- تسجيل الخروج ---
+    const { error } = await supabaseClient
+        .from('profiles')
+        .update({ 
+            subscription_status: 'paid',
+            subscription_end_date: subscriptionEndDate.toISOString()
+        })
+        .eq('id', userId);
+
+    if (error) {
+        alert('حدث خطأ أثناء تأكيد الاشتراك: ' + error.message);
+    } else {
+        alert('تم تأكيد اشتراك المستخدم بنجاح!');
+        // إعادة تحميل البيانات لتحديث الواجهة
+        loadSubscriptionRequests();
+        if (usersSection.classList.contains('hidden') === false) {
+             loadAllUsers();
+             loadStats();
+        }
+    }
+}
+
+// --- ربط الأحداث ---
 logoutBtn.addEventListener('click', async () => {
     await supabaseClient.auth.signOut();
     window.location.href = 'index.html';
+});
+
+// ربط حدث النقر على أزرار تأكيد الاشتراك
+document.getElementById('requests-table-body').addEventListener('click', (e) => {
+    if (e.target.matches('.action-btn')) {
+        const userId = e.target.dataset.userid;
+        if (confirm('هل أنت متأكد من رغبتك في تفعيل الاشتراك المدفوع لهذا المستخدم؟')) {
+            approveSubscription(userId);
+        }
+    }
 });
