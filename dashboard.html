@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - بسيط</title>
+    <!-- يمكنك إنشاء ملف CSS جديد للوحة التحكم أو استخدام القديم -->
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* أنماط بسيطة خاصة بلوحة التحكم */
+        .dashboard-body { background-color: #f0f2f5; padding: 20px; }
+        .dashboard-header { background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .dashboard-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: right; }
+        th { background-color: #f9f9f9; }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <header class="dashboard-header">
+        <div>
+            <h2>لوحة تحكم منصة بسيط</h2>
+            <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
+        </div>
+        <button id="logout-btn">تسجيل الخروج</button>
+    </header>
+
+    <main>
+        <!-- قسم الإحصائيات (لصاحب الموقع فقط) -->
+        <section id="stats-section" class="dashboard-section hidden">
+            <h3>الإحصائيات العامة</h3>
+            <div id="stats-content">
+                <!-- سيتم ملء الإحصائيات هنا عبر JS -->
+            </div>
+        </section>
+
+        <!-- قسم طلبات الاشتراك (للمساعد وصاحب الموقع) -->
+        <section id="requests-section" class="dashboard-section hidden">
+            <h3>طلبات الاشتراك المدفوع</h3>
+            <div id="requests-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>تاريخ الطلب</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requests-table-body">
+                        <!-- سيتم ملء الطلبات هنا عبر JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- قسم إدارة المستخدمين (لصاحب الموقع فقط) -->
+        <section id="users-section" class="dashboard-section hidden">
+            <h3>إدارة المستخدمين</h3>
+            <div id="users-content">
+                 <!-- سيتم ملء جدول المستخدمين هنا عبر JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

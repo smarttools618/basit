@@ -1,12 +1,16 @@
-/* ======== إعدادات عامة وخطوط ======== */
+/* ======== إعدادات عامة ومتغيرات الألوان ======== */
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #28a745;
-    --background-color: #f4f7f6;
-    --form-background: #ffffff;
-    --text-color: #333;
-    --light-gray: #ccc;
-    --dark-gray: #666;
+    --primary-color: #4A90E2; /* أزرق عصري */
+    --primary-hover: #357ACE;
+    --secondary-color: #50E3C2; /* أخضر فيروزي مشرق */
+    --secondary-hover: #29c9a9;
+    --accent-color: #F5A623;  /* برتقالي دافئ */
+    --background-color: #F8F9FA;
+    --form-background: #FFFFFF;
+    --text-color: #4A4A4A;
+    --light-gray: #DCE1E6;
+    --dark-gray: #777;
+    --font-family: 'Tajawal', sans-serif;
 }
 
 * {
@@ -15,61 +19,100 @@
     padding: 0;
 }
 
+html, body {
+    overflow-x: hidden; /* لمنع أي تمرير أفقي غير مرغوب فيه */
+}
+
 body {
-    font-family: 'Tajawal', sans-serif;
+    font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color);
     direction: rtl;
+    line-height: 1.6;
+}
+
+/* ======== التصميم المقسوم (Split Screen Layout) ======== */
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.form-panel {
+    flex: 1.2;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    padding: 40px;
+    background-color: var(--form-background);
+}
+
+.branding-panel {
+    flex: 1;
+    background: linear-gradient(160deg, var(--primary-color) 0%, #2c6bb5 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.branding-content {
+    text-align: center;
+    z-index: 2;
+}
+
+.branding-content h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.branding-content .slogan {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+.illustration {
+    max-width: 400px;
+    width: 100%;
 }
 
 /* ======== إخفاء وإظهار الصفحات ======== */
-.page {
-    display: none;
-}
+.page { display: none; }
 .page.active {
     display: block;
-    animation: fadeIn 0.5s ease-in-out;
+    width: 100%;
+    animation: fadeIn 0.6s ease-in-out;
 }
-
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ======== حاوية النماذج ======== */
+/* ======== تصميم النماذج ======== */
 .form-container {
-    background-color: var(--form-background);
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 400px;
-    text-align: center;
+    max-width: 420px;
 }
 
-h1 {
-    color: var(--primary-color);
-    font-size: 3rem;
+.form-title {
+    font-size: 2rem;
     font-weight: 700;
+    margin-bottom: 8px;
+    color: #333;
 }
 
-.slogan {
+.form-subtitle {
     font-size: 1rem;
     color: var(--dark-gray);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
-h2 {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    font-weight: 500;
-}
-
-/* ======== عناصر النماذج (Inputs, Buttons) ======== */
 form {
     display: flex;
     flex-direction: column;
@@ -77,41 +120,47 @@ form {
 
 input, select {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
+    padding: 14px 12px;
+    margin-bottom: 18px;
     border: 1px solid var(--light-gray);
     border-radius: 8px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: var(--font-family);
     font-size: 1rem;
-    transition: border-color 0.3s;
+    background-color: #FDFDFD;
+    transition: all 0.3s;
 }
 
 input:focus, select:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
 }
 
 button {
     background-color: var(--primary-color);
     color: white;
-    padding: 12px;
+    padding: 14px;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 700;
-    font-family: 'Tajawal', sans-serif;
+    font-family: var(--font-family);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
 }
 
-/* ======== روابط التنقل بين النماذج ======== */
+/* ======== روابط التنقل ======== */
 .switch-form, .form-links {
-    margin-top: 20px;
-    font-size: 0.9rem;
+    margin-top: 25px;
+    font-size: 0.95rem;
+    text-align: center;
 }
 .form-links {
     display: flex;
@@ -131,12 +180,16 @@ a:hover {
     width: 100%;
     max-width: 800px;
     text-align: center;
+    padding: 40px 20px; /* إضافة padding لتبدو أفضل كصفحة مستقلة */
+    margin: auto; /* لتوسيطها في الصفحة */
 }
 
 .offers-wrapper {
     display: flex;
+    justify-content: center;
     gap: 30px;
     margin-top: 30px;
+    flex-wrap: wrap; /* للسماح بالتجاوب على الشاشات الصغيرة */
 }
 
 .offer-card {
@@ -145,8 +198,11 @@ a:hover {
     border-radius: 12px;
     padding: 30px;
     flex: 1;
+    min-width: 300px; /* حد أدنى للعرض */
+    max-width: 340px;
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .offer-card:hover {
@@ -157,6 +213,7 @@ a:hover {
 .offer-card.paid {
     border-top: 5px solid var(--secondary-color);
 }
+
 .offer-card .badge {
     position: absolute;
     top: -15px;
@@ -169,45 +226,52 @@ a:hover {
     font-size: 0.8rem;
     font-weight: 700;
 }
+
 .offer-card h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
 }
+
 .offer-card .price {
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 20px;
 }
+
 .offer-card .price sub {
     font-size: 1rem;
     font-weight: 400;
     color: var(--dark-gray);
 }
+
 .offer-card ul {
     list-style: none;
     text-align: right;
     margin-bottom: 30px;
 }
+
 .offer-card ul li {
     margin-bottom: 10px;
 }
+
 .offer-card .select-offer-btn {
     width: 100%;
 }
+
 .offer-card.free .select-offer-btn {
     background-color: var(--dark-gray);
 }
 .offer-card.free .select-offer-btn:hover {
     background-color: #555;
 }
+
 .offer-card.paid .select-offer-btn {
     background-color: var(--secondary-color);
 }
 .offer-card.paid .select-offer-btn:hover {
-    background-color: #218838;
+    background-color: var(--secondary-hover);
 }
-
 
 /* ======== الرسالة المنبثقة (Popup) ======== */
 .popup-container {
@@ -237,6 +301,7 @@ a:hover {
     max-width: 380px;
     transform: scale(0.9);
     animation: zoomIn 0.3s forwards;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
 }
 
 @keyframes zoomIn {
@@ -262,5 +327,70 @@ a:hover {
     background-color: var(--secondary-color);
 }
 #close-popup-btn:hover {
-    background-color: #218838;
+    background-color: var(--secondary-hover);
+}
+
+/* ======== لوحة تحكم المستخدم البسيطة ======== */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.dashboard-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.dashboard-container p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+#logout-btn {
+    max-width: 200px;
+}
+
+
+/* ======== التصميم المتجاوب (Responsive) للموبايل ======== */
+@media (max-width: 992px) {
+    .auth-wrapper {
+        flex-direction: column-reverse;
+    }
+    .branding-panel {
+        flex: none;
+        height: 350px;
+    }
+    .branding-content .slogan {
+        margin-bottom: 20px;
+    }
+    .illustration {
+        max-width: 250px;
+    }
+    .form-panel {
+        padding: 40px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .branding-panel {
+        height: 250px;
+    }
+    .branding-content h1 {
+        font-size: 3rem;
+    }
+    .branding-content .slogan {
+        font-size: 1rem;
+    }
+    .illustration {
+        max-width: 180px;
+    }
+    .form-title {
+        font-size: 1.8rem;
+    }
 }
