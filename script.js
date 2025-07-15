@@ -2,7 +2,6 @@
 // الخطوة 1: إعداد الربط مع Supabase
 // =======================================================
 
-// تأكد من استبدال هذه القيم بالقيم الحقيقية الخاصة بك
 const SUPABASE_URL = 'https://gtznbmpueunibhwlpmtk.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0em5ibXB1ZXVuaWJod2xwbXRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1OTA3NjYsImV4cCI6MjA2ODE2Njc2Nn0.0A4csTHneN1_SUDygKA9qvpRv_dPaU7QNCfLz1oG_Xs';
 
@@ -10,7 +9,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-console.log('Supabase Client Initialized');
+console.log('Supabase Client Initialized for index.html');
 
 // =======================================================
 // الكود العام للتحكم في الواجهة
@@ -20,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- اختيار عناصر الواجهة (DOM Elements) ---
     const pages = document.querySelectorAll('.page');
-    const mainContainer = document.querySelector('.main-container');
+    const authWrapper = document.querySelector('.auth-wrapper');
 
     // النماذج
     const signupForm = document.getElementById('signup-form');
@@ -34,17 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const gotoForgotPasswordLink = document.getElementById('goto-forgot-password');
     const backToLoginLink = document.getElementById('back-to-login-1');
     
-    // أزرار العروض
+    // أزرار العروض (إذا كانت موجودة في index.html)
     const offerButtons = document.querySelectorAll('.select-offer-btn');
     
-    // عناصر الرسالة المنبثقة
+    // عناصر الرسالة المنبثقة (إذا كانت موجودة في index.html)
     const successPopup = document.getElementById('success-popup');
     const closePopupBtn = document.getElementById('close-popup-btn');
 
     // --- وظيفة التنقل بين الصفحات ---
     function showPage(pageId) {
         pages.forEach(page => {
-            page.classList.remove('active');
+            if(page) page.classList.remove('active');
         });
         const activePage = document.getElementById(pageId);
         if (activePage) {
@@ -52,10 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // --- وظيفة عرض الصفحة الرئيسية للمستخدم المسجل ---
-    function showDashboard(user) {
-        mainContainer.style.display = 'none';
-        const firstName = user.user_metadata.first_name;
+    // --- وظيفة عرض الصفحة الرئيسية للطالب المسجل ---
+    function showStudentDashboard(user) {
+        if(authWrapper) authWrapper.style.display = 'none';
+        // مسح أي عناصر قديمة في الـ body لتجنب التكرار
+        const oldDashboard = document.querySelector('.dashboard-container');
+        if(oldDashboard) oldDashboard.remove();
+        
+        const firstName = user.user_metadata.first_name || 'الطالب';
         const subscription = user.user_metadata.subscription_type;
         document.body.innerHTML += `
             <div class="dashboard-container">
@@ -65,26 +68,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id="logout-btn">تسجيل الخروج</button>
             </div>
         `;
-        // إضافة حدث لزر تسجيل الخروج
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await supabaseClient.auth.signOut();
-            window.location.reload(); // إعادة تحميل الصفحة للعودة لشاشة الدخول
+            window.location.reload();
         });
     }
-
 
     // =======================================================
     // ربط الأحداث (Event Listeners)
     // =======================================================
 
     // 1. التنقل بين النماذج
-    gotoLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login-page'); });
-    gotoSignupLink.addEventListener('click', (e) => { e.preventDefault(); showPage('signup-page'); });
-    gotoForgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); showPage('forgot-password-page'); });
-    backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login-page'); });
+    if(gotoLoginLink) gotoLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login-page'); });
+    if(gotoSignupLink) gotoSignupLink.addEventListener('click', (e) => { e.preventDefault(); showPage('signup-page'); });
+    if(gotoForgotPasswordLink) gotoForgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); showPage('forgot-password-page'); });
+    if(backToLoginLink) backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login-page'); });
 
     // 2. نموذج إنشاء الحساب
-    signupForm.addEventListener('submit', async (e) => {
+    if(signupForm) signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const [firstName, lastName, email, password, level] = [...e.target].map(input => input.value);
 
@@ -96,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     first_name: firstName,
                     last_name: lastName,
                     level: level,
-                    subscription_type: 'none', // لم يختر عرضاً بعد
+                    subscription_type: 'none',
                     subscription_end_date: null,
                 }
             }
@@ -105,45 +106,48 @@ document.addEventListener('DOMContentLoaded', () => {
         if (error) {
             alert('حدث خطأ: ' + error.message);
         } else {
-            successPopup.querySelector('p').textContent = 'تم إنشاء حسابك بنجاح. يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.';
-            successPopup.classList.add('active');
+            alert('تم إنشاء حسابك بنجاح. يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب قبل تسجيل الدخول.');
+            showPage('login-page');
         }
     });
 
-    // 3. إغلاق الرسالة المنبثقة
-    closePopupBtn.addEventListener('click', () => {
-        successPopup.classList.remove('active');
-        showPage('login-page');
-    });
-
-    // 4. نموذج تسجيل الدخول
-    loginForm.addEventListener('submit', async (e) => {
+    // 3. نموذج تسجيل الدخول (مع المنطق الذكي للتوجيه)
+    if(loginForm) loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const [email, password] = [...e.target].map(input => input.value);
 
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        const { data: { user }, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
         if (error) {
             alert('خطأ في تسجيل الدخول: ' + error.message);
-        } else if (data.user) {
-            const subscription = data.user.user_metadata.subscription_type;
-            if (subscription === 'none' || !subscription) {
-                showPage('offer-page');
+            return;
+        }
+
+        if (user) {
+            // بعد النجاح، تحقق إذا كان المستخدم مشرفاً
+            const { data: adminData, error: adminError } = await supabaseClient
+                .from('admins')
+                .select('role')
+                .eq('user_id', user.id)
+                .single();
+
+            if (adminData) {
+                // نعم، هو مشرف! قم بتوجيهه إلى لوحة التحكم
+                alert('مرحباً أيها المشرف! سيتم توجيهك إلى لوحة التحكم.');
+                window.location.href = 'dashboard.html';
             } else {
-                showDashboard(data.user);
+                // لا، هو طالب عادي. اعرض له لوحة تحكم الطالب
+                showStudentDashboard(user);
             }
         }
     });
 
-    // 5. نموذج نسيت كلمة السر
-    forgotPasswordForm.addEventListener('submit', async (e) => {
+    // 4. نموذج نسيت كلمة السر
+    if(forgotPasswordForm) forgotPasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = e.target[0].value;
-        
-        // **هام:** يجب تفعيل خيار "Secure email change" في إعدادات Supabase
-        // (Authentication -> Providers -> Email -> Secure email change)
         const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin, // الرابط الذي سيعود إليه المستخدم بعد الضغط على الرابط في الإيميل
+            redirectTo: window.location.origin, 
         });
 
         if (error) {
@@ -154,14 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 6. نموذج إعادة تعيين كلمة السر الجديدة
-    // هذا النموذج يتم الوصول إليه عبر الرابط في البريد الإلكتروني
-    // Supabase سيتكفل بعرض النموذج تلقائياً
-    // لكننا سنبرمج منطق التحديث إذا عاد المستخدم للصفحة بعد التحقق
+    // 5. نموذج إعادة تعيين كلمة السر الجديدة
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (event === "PASSWORD_RECOVERY") {
             showPage('reset-password-page');
-            resetPasswordForm.addEventListener('submit', async (e) => {
+            if(resetPasswordForm) resetPasswordForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const newPassword = e.target[0].value;
                 const confirmPassword = e.target[1].value;
@@ -177,70 +178,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert("خطأ في تحديث كلمة السر: " + error.message);
                 } else {
                     alert("تم تغيير كلمة السر بنجاح. يمكنك الآن تسجيل الدخول.");
+                    // إعادة التوجيه لتسجيل الخروج من جلسة استعادة كلمة المرور
+                    await supabaseClient.auth.signOut();
                     showPage('login-page');
                 }
             });
         }
     });
 
-    // 7. أزرار اختيار العرض
-    offerButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-            const offerType = button.closest('.offer-card').classList.contains('free') ? 'free' : 'paid';
-            
-            if (offerType === 'paid') {
-                // منطق العرض المدفوع
-                alert('الاشتراك المدفوع قيد التطوير. سيتم توجيهك الآن للمنصة بالعرض المجاني.');
-                // مؤقتاً، سنقوم بتسجيله في العرض المجاني
-                updateUserSubscription('free');
-            } else {
-                // منطق العرض المجاني
-                updateUserSubscription('free');
-            }
-        });
-    });
-    
-    // وظيفة تحديث اشتراك المستخدم
-    async function updateUserSubscription(subscriptionType) {
-        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-
-        if (userError || !user) {
-            alert('لا يمكن تحديث الاشتراك. يرجى تسجيل الدخول مرة أخرى.');
-            return;
-        }
-
-        const { data, error } = await supabaseClient.auth.updateUser({
-            data: { 
-                subscription_type: subscriptionType 
-            }
-        });
-
-        if (error) {
-            alert('حدث خطأ أثناء تحديث الاشتراك: ' + error.message);
-        } else {
-            alert(`تم اشتراكك في ${subscriptionType === 'free' ? 'العرض المجاني' : 'العرض المدفوع'} بنجاح!`);
-            showDashboard(data.user);
-        }
-    }
-
-
     // --- التحقق من حالة المستخدم عند تحميل الصفحة ---
-    // هذا الجزء مهم لمعرفة ما إذا كان المستخدم مسجلاً دخوله بالفعل
     async function checkUserSession() {
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
+            // إذا كان هناك جلسة نشطة، تحقق من هو المستخدم ووجهه
             const user = session.user;
-            const subscription = user.user_metadata.subscription_type;
-            if (subscription && subscription !== 'none') {
-                showDashboard(user);
+            const { data: adminData } = await supabaseClient.from('admins').select('role').eq('user_id', user.id).single();
+            if (adminData) {
+                // إذا كان مشرفاً، اتركه في صفحة الدخول ليسجل دخوله ويتجه للداشبورد
+                 showPage('login-page');
             } else {
-                showPage('offer-page');
+                // إذا كان طالباً، اعرض له لوحة تحكمه
+                showStudentDashboard(user);
             }
         } else {
-            showPage('login-page'); // إذا لم يكن هناك جلسة، اذهب لصفحة تسجيل الدخول
+            // إذا لم يكن هناك أي جلسة، ابدأ من صفحة إنشاء حساب
+            showPage('signup-page');
         }
     }
 
-    // ابدأ بفحص جلسة المستخدم
     checkUserSession();
 });
