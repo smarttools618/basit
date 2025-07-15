@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بسيط - وداعاً للتعقيد</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="auth-wrapper">
-        <!-- ============ الجزء الأيمن: النماذج ============ -->
         <div class="form-panel">
-            <!-- 1. صفحة إنشاء الحساب -->
+            <!-- صفحة إنشاء الحساب -->
             <div id="signup-page" class="page active">
                 <div class="form-container">
                     <h2 class="form-title">انضم إلى عالم بسيط</h2>
@@ -35,9 +32,11 @@
                              <i class="fa-solid fa-envelope"></i>
                             <input type="email" placeholder="البريد الإلكتروني" required>
                         </div>
+                        <!-- تحديث حقل كلمة السر -->
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" placeholder="كلمة السر" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                         <div class="input-with-icon">
                              <i class="fa-solid fa-graduation-cap"></i>
@@ -57,7 +56,7 @@
                 </div>
             </div>
 
-            <!-- 2. صفحة تسجيل الدخول -->
+            <!-- صفحة تسجيل الدخول -->
             <div id="login-page" class="page">
                 <div class="form-container">
                     <h2 class="form-title">أهلاً بعودتك!</h2>
@@ -67,9 +66,11 @@
                              <i class="fa-solid fa-envelope"></i>
                             <input type="email" placeholder="البريد الإلكتروني" required>
                         </div>
+                         <!-- تحديث حقل كلمة السر -->
                          <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" placeholder="كلمة السر" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                         <button type="submit">تسجيل الدخول</button>
                     </form>
@@ -80,7 +81,27 @@
                 </div>
             </div>
             
-            <!-- صفحات أخرى (تبقى كما هي) -->
+            <!-- صفحة إعادة تعيين كلمة السر -->
+            <div id="reset-password-page" class="page">
+                 <div class="form-container">
+                    <h2 class="form-title">اختر كلمة سر جديدة</h2>
+                    <form id="reset-password-form">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="كلمة السر الجديدة" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                         <div class="input-with-icon">
+                            <i class="fa-solid fa-check-double"></i>
+                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                        <button type="submit">تغيير كلمة السر</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- الصفحات الأخرى تبقى كما هي -->
             <div id="forgot-password-page" class="page">
                  <div class="form-container">
                     <h2 class="form-title">إعادة تعيين كلمة السر</h2>
@@ -95,26 +116,8 @@
                     <p class="switch-form"><a href="#" id="back-to-login-1">العودة لتسجيل الدخول</a></p>
                 </div>
             </div>
-
-            <div id="reset-password-page" class="page">
-                 <div class="form-container">
-                    <h2 class="form-title">اختر كلمة سر جديدة</h2>
-                    <form id="reset-password-form">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر الجديدة" required>
-                        </div>
-                         <div class="input-with-icon">
-                            <i class="fa-solid fa-check-double"></i>
-                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
-                        </div>
-                        <button type="submit">تغيير كلمة السر</button>
-                    </form>
-                </div>
-            </div>
         </div>
 
-        <!-- ============ الجزء الأيسر: العلامة التجارية ============ -->
         <div class="branding-panel">
             <div class="branding-content">
                 <h1>بسيط</h1>
@@ -124,11 +127,9 @@
         </div>
     </div>
     
-    <!-- باقي العناصر تبقى كما هي -->
     <div id="offer-page" class="page"></div>
     <div id="success-popup" class="popup-container"></div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>

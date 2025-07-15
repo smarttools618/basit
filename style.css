@@ -239,3 +239,9 @@ a:hover {
         padding: 40px 20px;
     }
 }
+/* --- إضافة لدعم أيقونة إظهار/إخفاء كلمة السر --- */
+.input-with-icon .toggle-password {
+    left: 15px; /* وضعها على اليسار */
+    right: auto;
+    cursor: pointer;
+}
