@@ -1,12 +1,12 @@
-/* ======== ملف أنماط خاص بلوحة التحكم - dashboard_style.css ======== */
-
+/* ======== ملف أنماط خاص بلوحة التحكم (تصميم حديث وموحد) ======== */
 :root {
     --primary-color: #0059ff;
     --primary-hover: #0048cc;
-    --background-color: #f4f7fa; /* خلفية رمادية فاتحة جداً */
+    --background-color: #f8f9fa;
     --card-background: #ffffff;
-    --text-color: #1f2937;
-    --text-light: #6b7280;
+    --input-background: #f1f5f9;
+    --text-color: #111827;
+    --text-light: #4b5563;
     --border-color: #e5e7eb;
     --success-bg: #dcfce7;
     --success-text: #166534;
@@ -15,7 +15,7 @@
     --danger-color: #ef4444;
     --danger-hover: #dc2626;
     --font-family: 'Tajawal', sans-serif;
-    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 body {
@@ -29,171 +29,121 @@ body {
 /* ======== الهيدر العلوي ======== */
 .dashboard-header {
     background: var(--card-background);
-    padding: 20px 40px;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
-
-.dashboard-header h2 {
-    color: var(--text-color);
+.header-brand h2 {
+    color: var(--primary-color);
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
 }
-
-.dashboard-header p {
+.header-user p {
     color: var(--text-light);
-    margin: 5px 0 0;
+    margin: 0;
     font-size: 0.9rem;
 }
-
 #logout-btn {
+    background-color: transparent;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#logout-btn:hover {
     background-color: var(--danger-color);
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    font-family: var(--font-family);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#logout-btn:hover {
-    background-color: var(--danger-hover);
 }
 
 /* ======== المحتوى الرئيسي والبطاقات ======== */
 main {
-    padding: 30px 40px;
+    padding: 25px 30px;
 }
-
 .dashboard-section {
     background: var(--card-background);
-    padding: 25px 30px;
     border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow);
-}
-
-.dashboard-section h3 {
-    margin-top: 0;
     margin-bottom: 25px;
-    padding-bottom: 15px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden; /* لضمان أن الحواف الدائرية تعمل مع الجدول */
+}
+.section-header {
+    padding: 20px 25px;
     border-bottom: 1px solid var(--border-color);
-    font-size: 1.3rem;
-    color: var(--text-color);
 }
-
-.hidden {
-    display: none;
+.section-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
 }
+.section-content {
+    padding: 25px;
+}
+.hidden { display: none; }
 
 /* ======== بطاقات الإحصائيات ======== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
-
 .stat-card {
-    background-color: #f9fafb;
+    background-color: var(--background-color);
     padding: 20px;
     border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+}
+.stat-card h4 { margin: 0 0 8px 0; color: var(--text-light); font-weight: 500; }
+.stat-card p { margin: 0; font-size: 2.2rem; font-weight: 700; color: var(--text-color); }
+
+/* ======== أدوات التحكم بالجدول (فلاتر وبحث) ======== */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.filters button {
+    padding: 8px 16px;
     border: 1px solid var(--border-color);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-
-.stat-card h4 {
-    margin: 0 0 10px 0;
-    color: var(--text-light);
-    font-size: 1rem;
-    font-weight: 500;
+.filters button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
-
-.stat-card p {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
+.search-box input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background);
+}
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 /* ======== تصميم الجداول ======== */
-.table-wrapper {
-    overflow-x: auto; /* لجعل الجدول متجاوباً على الشاشات الصغيرة */
-}
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px 15px; text-align: right; vertical-align: middle; }
+th { background-color: #f9fafb; font-weight: 600; color: var(--text-light); font-size: 0.85rem; }
+tbody tr { border-bottom: 1px solid var(--border-color); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background-color: var(--input-background); }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px; /* لمنع تكسر الجدول على الشاشات الضيقة جداً */
-}
-
-th, td {
-    padding: 15px;
-    text-align: right;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border-color);
-}
-
-th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: var(--text-light);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-}
-
-td {
-    font-size: 0.95rem;
-}
-
-/* ======== شارات الحالة (Status Badges) ======== */
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    display: inline-block;
-}
-
-.status-paid {
-    background-color: var(--success-bg);
-    color: var(--success-text);
-}
-
-.status-free {
-    background-color: #e0e7ff;
-    color: #4338ca;
-}
-
-.status-pending {
-    background-color: var(--pending-bg);
-    color: var(--pending-text);
-}
-
-/* ======== أزرار الإجراءات ======== */
-.action-btn {
-    background-color: var(--success-text);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: var(--font-family);
-    transition: background-color 0.3s;
-    font-weight: 500;
-}
-
-.action-btn:hover {
-    background-color: #15803d; /* أخضر أغمق */
-}
-
-.loading {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-light);
-    font-size: 1.1rem;
-}
+/* ... نفس تصميم شارات الحالة وأزرار الإجراءات ... */
+.status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+.status-paid { background-color: var(--success-bg); color: var(--success-text); }
+.status-pending { background-color: var(--pending-bg); color: var(--pending-text); }
+.action-btn { background-color: var(--success-text); /* ... */ }
+.delete-btn { background-color: var(--danger-color); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }

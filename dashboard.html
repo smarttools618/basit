@@ -4,74 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - بسيط</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- ملف الأنماط الجديد للوحة التحكم -->
     <link rel="stylesheet" href="dashboard_style.css">
 </head>
 <body>
-
     <header class="dashboard-header">
-        <div>
-            <h2>لوحة تحكم بسيط</h2>
-            <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
+        <div class="header-brand">
+            <h2>بسيط | لوحة التحكم</h2>
         </div>
-        <button id="logout-btn">تسجيل الخروج</button>
+        <div class="header-user">
+            <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
+            <button id="logout-btn">تسجيل الخروج</button>
+        </div>
     </header>
 
     <main>
-        <!-- قسم الإحصائيات (لصاحب الموقع فقط) -->
+        <!-- قسم الإحصائيات -->
         <section id="stats-section" class="dashboard-section hidden">
-            <h3>نظرة عامة</h3>
-            <div id="stats-grid" class="stats-grid">
-                <!-- سيتم ملء الإحصائيات هنا عبر JS -->
-                <div class="loading">جاري تحميل الإحصائيات...</div>
+            <div class="section-header"><h3>نظرة عامة</h3></div>
+            <div class="section-content">
+                <div id="stats-grid" class="stats-grid"></div>
             </div>
         </section>
 
-        <!-- قسم طلبات الاشتراك (للمساعد وصاحب الموقع) -->
-        <section id="requests-section" class="dashboard-section hidden">
-            <h3>طلبات الاشتراك المدفوع الجديدة</h3>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم الكامل</th>
-                            <th>البريد الإلكتروني</th>
-                            <th>تاريخ الطلب</th>
-                            <th>الإجراء</th>
-                        </tr>
-                    </thead>
-                    <tbody id="requests-table-body">
-                        <!-- سيتم ملء الطلبات هنا عبر JS -->
-                         <tr><td colspan="4" class="loading">جاري تحميل الطلبات...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- قسم إدارة المستخدمين (لصاحب الموقع فقط) -->
+        <!-- قسم إدارة المستخدمين -->
         <section id="users-section" class="dashboard-section hidden">
-            <h3>إدارة جميع المستخدمين</h3>
-            <div class="table-wrapper">
-                 <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم الكامل</th>
-                            <th>البريد الإلكتروني</th>
-                            <th>حالة الاشتراك</th>
-                            <th>تاريخ التسجيل</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-table-body">
-                        <!-- سيتم ملء جدول المستخدمين هنا عبر JS -->
-                        <tr><td colspan="4" class="loading">جاري تحميل المستخدمين...</td></tr>
-                    </tbody>
-                </table>
+            <div class="section-header"><h3>إدارة المستخدمين</h3></div>
+            <div class="section-content">
+                <div class="table-controls">
+                    <div class="filters" id="user-filters">
+                        <button data-filter="all" class="active">الكل</button>
+                        <button data-filter="paid">مدفوع</button>
+                        <button data-filter="free">مجاني</button>
+                        <button data-filter="pending_paid">طلبات معلقة</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="user-search" placeholder="ابحث بالبريد الإلكتروني...">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الاسم الكامل</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>حالة الاشتراك</th>
+                                <th>تاريخ التسجيل</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
+        
+        <!-- يمكن إضافة قسم الطلبات هنا بنفس الطريقة إذا أردت فصله -->
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
