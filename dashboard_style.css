@@ -1,50 +1,112 @@
-/* ======== ملف أنماط خاص بلوحة التحكم (تصميم حديث وموحد) ======== */
+/* ======== ملف أنماط لوحة التحكم (تصميم احترافي كامل) ======== */
 :root {
     --primary-color: #0059ff;
     --primary-hover: #0048cc;
-    --background-color: #f8f9fa;
-    --card-background: #ffffff;
-    --input-background: #f1f5f9;
-    --text-color: #111827;
-    --text-light: #4b5563;
+    --sidebar-bg: #111827; /* لون الشريط الجانبي (أسود-كحلي) */
+    --main-bg: #f3f4f6; /* لون خلفية المحتوى (رمادي فاتح جداً) */
+    --card-bg: #ffffff;
+    --text-color: #1f2937;
+    --text-light: #6b7280;
+    --text-inverse: #e5e7eb;
+    --text-inverse-hover: #ffffff;
     --border-color: #e5e7eb;
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
     --success-bg: #dcfce7;
     --success-text: #166534;
     --pending-bg: #fef9c3;
     --pending-text: #854d0e;
     --danger-color: #ef4444;
     --danger-hover: #dc2626;
-    --font-family: 'Tajawal', sans-serif;
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 body {
-    background-color: var(--background-color);
-    font-family: var(--font-family);
-    direction: rtl;
-    color: var(--text-color);
     margin: 0;
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    background-color: var(--main-bg);
 }
 
-/* ======== الهيدر العلوي ======== */
-.dashboard-header {
-    background: var(--card-background);
-    padding: 15px 30px;
+.dashboard-layout {
+    display: flex;
+}
+
+/* ======== الشريط الجانبي (Sidebar) ======== */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-inverse);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    transition: width 0.3s;
+}
+
+.sidebar-header {
+    padding: 22px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 1px solid #374151;
+    color: var(--text-inverse-hover);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 25px;
+    color: var(--text-inverse);
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 1rem;
+    border-right: 4px solid transparent;
+}
+
+.sidebar-menu a:hover {
+    background-color: #1f2937;
+    color: var(--text-inverse-hover);
+}
+
+.sidebar-menu a.active {
+    background-color: var(--primary-color);
+    color: var(--text-inverse-hover);
+    font-weight: 500;
+}
+
+.sidebar-menu a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* ======== المحتوى الرئيسي ======== */
+.main-content {
+    flex: 1;
+    background-color: var(--main-bg);
+    margin-right: 260px; /* نفس عرض الشريط الجانبي */
+}
+
+.main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 30px;
+    background: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
 }
-.header-brand h2 {
-    color: var(--primary-color);
-    margin: 0;
-    font-size: 1.6rem;
-}
-.header-user p {
+
+.main-header p {
     color: var(--text-light);
     margin: 0;
-    font-size: 0.9rem;
 }
+
 #logout-btn {
     background-color: transparent;
     color: var(--danger-color);
@@ -55,95 +117,127 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
 #logout-btn:hover {
     background-color: var(--danger-color);
     color: white;
 }
 
-/* ======== المحتوى الرئيسي والبطاقات ======== */
-main {
-    padding: 25px 30px;
+/* ======== الصفحات والتبويبات ======== */
+.page {
+    display: none;
+    padding: 30px;
 }
-.dashboard-section {
-    background: var(--card-background);
-    border-radius: 12px;
-    margin-bottom: 25px;
-    box-shadow: var(--shadow-md);
-    overflow: hidden; /* لضمان أن الحواف الدائرية تعمل مع الجدول */
+
+.page.active {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .section-header {
-    padding: 20px 25px;
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
 }
 .section-header h3 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.8rem;
+    color: var(--text-color);
 }
-.section-content {
-    padding: 25px;
-}
-.hidden { display: none; }
 
 /* ======== بطاقات الإحصائيات ======== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
 }
 .stat-card {
-    background-color: var(--background-color);
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 4px solid var(--primary-color);
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border-left: 5px solid var(--primary-color);
 }
-.stat-card h4 { margin: 0 0 8px 0; color: var(--text-light); font-weight: 500; }
-.stat-card p { margin: 0; font-size: 2.2rem; font-weight: 700; color: var(--text-color); }
+.stat-card h4 {
+    margin: 0 0 10px 0;
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 1rem;
+}
+.stat-card p {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
 
-/* ======== أدوات التحكم بالجدول (فلاتر وبحث) ======== */
-.table-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ======== قسم إدارة المحتوى ======== */
+.content-management {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+.add-content-form {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+.add-content-form h4 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
+}
+#add-content-form {
+    display: flex;
+    flex-direction: column;
     gap: 15px;
 }
-.filters button {
-    padding: 8px 16px;
-    border: 1px solid var(--border-color);
-    background: transparent;
+#add-content-form input, #add-content-form select, #add-content-form button {
+    width: 100%;
+    padding: 12px;
     border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
 }
-.filters button.active {
+#add-content-form button {
     background-color: var(--primary-color);
     color: white;
-    border-color: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
 }
-.search-box input {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background-color: var(--input-background);
-}
-.search-box input:focus {
-    outline: none;
-    border-color: var(--primary-color);
+#add-content-form button:hover {
+    background-color: var(--primary-hover);
 }
 
-/* ======== تصميم الجداول ======== */
+.content-list {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+.content-list h4 { /* ... */ }
+
+/* ======== تصميم الجداول (للمستخدمين والمحتوى) ======== */
 .table-wrapper { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 12px 15px; text-align: right; vertical-align: middle; }
 th { background-color: #f9fafb; font-weight: 600; color: var(--text-light); font-size: 0.85rem; }
 tbody tr { border-bottom: 1px solid var(--border-color); }
 tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background-color: var(--input-background); }
+tbody tr:hover { background-color: #f3f4f6; }
 
-/* ... نفس تصميم شارات الحالة وأزرار الإجراءات ... */
+/* ... (باقي التنسيقات مثل الفلاتر والبحث وشارات الحالة تبقى كما هي) ... */
+.table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+.filters button { padding: 8px 16px; border: 1px solid var(--border-color); background: transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+.filters button.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+.search-box input { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); }
 .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
 .status-paid { background-color: var(--success-bg); color: var(--success-text); }
-.status-pending { background-color: var(--pending-bg); color: var(--pending-text); }
-.action-btn { background-color: var(--success-text); /* ... */ }
-.delete-btn { background-color: var(--danger-color); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }

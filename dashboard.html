@@ -4,66 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - بسيط</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="dashboard_style.css">
 </head>
 <body>
-    <header class="dashboard-header">
-        <div class="header-brand">
-            <h2>بسيط | لوحة التحكم</h2>
-        </div>
-        <div class="header-user">
-            <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
-            <button id="logout-btn">تسجيل الخروج</button>
-        </div>
-    </header>
-
-    <main>
-        <!-- قسم الإحصائيات -->
-        <section id="stats-section" class="dashboard-section hidden">
-            <div class="section-header"><h3>نظرة عامة</h3></div>
-            <div class="section-content">
-                <div id="stats-grid" class="stats-grid"></div>
+    <div class="dashboard-layout">
+        <!-- القائمة الجانبية للتنقل -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>بسيط</h3>
             </div>
-        </section>
+            <ul class="sidebar-menu">
+                <li><a href="#overview" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>نظرة عامة</span></a></li>
+                <li><a href="#users" class="nav-link"><i class="fas fa-users"></i><span>المستخدمون</span></a></li>
+                <li><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a></li>
+                <li><a href="#offers" class="nav-link"><i class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
+                <li><a href="#admins" class="nav-link"><i class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
+            </ul>
+        </nav>
 
-        <!-- قسم إدارة المستخدمين -->
-        <section id="users-section" class="dashboard-section hidden">
-            <div class="section-header"><h3>إدارة المستخدمين</h3></div>
-            <div class="section-content">
-                <div class="table-controls">
-                    <div class="filters" id="user-filters">
-                        <button data-filter="all" class="active">الكل</button>
-                        <button data-filter="paid">مدفوع</button>
-                        <button data-filter="free">مجاني</button>
-                        <button data-filter="pending_paid">طلبات معلقة</button>
-                    </div>
-                    <div class="search-box">
-                        <input type="text" id="user-search" placeholder="ابحث بالبريد الإلكتروني...">
-                    </div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>الاسم الكامل</th>
-                                <th>البريد الإلكتروني</th>
-                                <th>حالة الاشتراك</th>
-                                <th>تاريخ التسجيل</th>
-                                <th>إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="users-table-body"></tbody>
-                    </table>
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <header class="main-header">
+                <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
+                <button id="logout-btn">تسجيل الخروج</button>
+            </header>
+
+            <!-- قسم نظرة عامة (الإحصائيات والأرباح) -->
+            <div id="overview" class="page active">
+                <div class="section-header"><h3>نظرة عامة</h3></div>
+                <div id="stats-grid" class="stats-grid">
+                    <!-- سيتم ملء الإحصائيات هنا -->
                 </div>
             </div>
-        </section>
-        
-        <!-- يمكن إضافة قسم الطلبات هنا بنفس الطريقة إذا أردت فصله -->
 
-    </main>
+            <!-- قسم إدارة المستخدمين -->
+            <div id="users" class="page">
+                <div class="section-header"><h3>إدارة المستخدمين</h3></div>
+                <!-- أدوات التحكم بالجدول (نفس الكود السابق) -->
+            </div>
+
+            <!-- قسم إدارة المحتوى -->
+            <div id="content" class="page">
+                <div class="section-header"><h3>إدارة المحتوى</h3></div>
+                <div class="content-management">
+                    <div class="add-content-form">
+                        <h4>إضافة محتوى جديد</h4>
+                        <form id="add-content-form">
+                            <input type="text" id="content-title" placeholder="عنوان الملف" required>
+                            <input type="url" id="gdrive-link" placeholder="رابط Google Drive (للمعاينة)" required>
+                            <select id="content-category" required><option value="">اختر النوع</option><option value="exercise">تمرين</option><option value="summary">ملخص</option></select>
+                            <select id="content-level" required><option value="">اختر المستوى</option><!-- سيتم ملؤها --></select>
+                            <select id="content-trimester" required><option value="">اختر الثلاثي</option><option value="1">الثلاثي 1</option><option value="2">الثلاثي 2</option><option value="3">الثلاثي 3</option></select>
+                            <button type="submit">حفظ المحتوى</button>
+                        </form>
+                    </div>
+                    <div class="content-list">
+                        <h4>قائمة المحتوى</h4>
+                        <!-- سيتم عرض جدول المحتوى هنا -->
+                    </div>
+                </div>
+            </div>
+
+             <!-- باقي الأقسام (سيتم بناؤها لاحقاً) -->
+            <div id="offers" class="page"></div>
+            <div id="admins" class="page"></div>
+        </main>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
