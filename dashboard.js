@@ -1,5 +1,5 @@
 // =======================================================
-// الكود الكامل والنهائي لملف dashboard.js
+// الكود الكامل والنهائي لملف dashboard.js - مع إدارة الأعضاء والعروض
 // =======================================================
 
 const SUPABASE_URL = 'https://yjujdodudllhlgvhrhsw.supabase.co';
@@ -8,38 +8,23 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- تهيئة عناصر الواجهة الرئيسية ---
+// --- تهيئة عناصر الواجهة ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. التحقق من هوية المشرف
     const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-        window.location.href = 'index.html';
-        return;
-    }
+    if (!user) { window.location.href = 'index.html'; return; }
+    
     const { data: adminData } = await supabaseClient.from('admins').select('role, full_name').eq('user_id', user.id).single();
-    if (!adminData) {
-        alert('ليس لديك صلاحية الوصول لهذه الصفحة.');
-        await supabaseClient.auth.signOut();
-        window.location.href = 'index.html';
-        return;
-    }
+    if (!adminData) { alert('ليس لديك صلاحية الوصول لهذه الصفحة.'); await supabaseClient.auth.signOut(); window.location.href = 'index.html'; return; }
 
-    // 2. تعيين بيانات المشرف في الهيدر
     document.getElementById('admin-name').textContent = adminData.full_name;
     document.getElementById('admin-role').textContent = adminData.role === 'super_admin' ? 'صاحب الموقع' : 'مساعد';
-
-    // 3. إعداد التنقل بين التبويبات
+    
     setupNavigation(adminData.role);
-
-    // 4. تحميل البيانات بناءً على دور المشرف
     initializeDashboard(adminData.role, user.id);
-
-    // 5. ربط الأحداث (Event Listeners)
     setupEventListeners();
 });
 
-
-// --- وظائف إعداد الواجهة والتنقل ---
+// --- إعداد الواجهة والتنقل ---
 function setupNavigation(role) {
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
@@ -68,7 +53,6 @@ function initializeDashboard(role, currentAdminId) {
         loadOverviewStats();
         loadOffers();
         loadAdmins(currentAdminId);
-        // يمكنك إضافة دوال تحميل الأقسام الأخرى هنا
     }
 }
 
@@ -85,30 +69,7 @@ function setupEventListeners() {
     document.getElementById('admins-table-body').addEventListener('click', handleAdminActions);
 }
 
-
-// --- وظائف قسم نظرة عامة (Overview) ---
-async function loadOverviewStats() {
-    const statsGrid = document.getElementById('stats-grid');
-    if (!statsGrid) return;
-    statsGrid.innerHTML = `<div>جاري تحميل الإحصائيات...</div>`;
-
-    const { count: totalUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
-    const { count: paidUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true }).eq('subscription_status', 'paid');
-    const { data: offers } = await supabaseClient.from('offers').select('price');
-    
-    // حساب تقديري للأرباح بناء على كل العروض المدفوعة
-    const estimatedRevenue = (paidUsers || 0) * (offers?.find(o => o.price > 0)?.price || 10);
-
-    statsGrid.innerHTML = `
-        <div class="stat-card"><h4>إجمالي المستخدمين</h4><p>${totalUsers || 0}</p></div>
-        <div class="stat-card"><h4>الاشتراكات المدفوعة</h4><p>${paidUsers || 0}</p></div>
-        <div class="stat-card"><h4>الاشتراكات المجانية</h4><p>${(totalUsers || 0) - (paidUsers || 0)}</p></div>
-        <div class="stat-card"><h4>الأرباح الشهرية (تقديري)</h4><p>${estimatedRevenue} د.ت</p></div>
-    `;
-}
-
-
-// --- وظائف قسم إدارة العروض (Offers) ---
+// --- إدارة العروض ---
 async function loadOffers() {
     const { data, error } = await supabaseClient.from('offers').select('*').order('price');
     if (error) { console.error("Error loading offers:", error); return; }
@@ -120,8 +81,8 @@ async function loadOffers() {
             <td>${offer.price} د.ت</td>
             <td>${offer.duration_days === 30 ? 'شهري' : 'سنوي'}</td>
             <td class="action-buttons">
-                <button class="edit-btn" data-id="${offer.id}" title="تعديل"><i class="fas fa-edit"></i></button>
-                <button class="delete-btn" data-id="${offer.id}" title="حذف"><i class="fas fa-trash"></i></button>
+                <button class="edit-btn" data-id="${offer.id}"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${offer.id}"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
     `).join('');
@@ -138,12 +99,15 @@ async function handleOfferSubmit(e) {
         description: form.querySelector('#offer-description').value,
     };
 
-    const { error } = offerId
-        ? await supabaseClient.from('offers').update(offerData).eq('id', offerId)
-        : await supabaseClient.from('offers').insert([offerData]);
+    let result;
+    if (offerId) {
+        result = await supabaseClient.from('offers').update(offerData).eq('id', offerId);
+    } else {
+        result = await supabaseClient.from('offers').insert([offerData]);
+    }
 
-    if (error) {
-        alert("خطأ في حفظ العرض: " + error.message);
+    if (result.error) {
+        alert("خطأ في حفظ العرض: " + result.error.message);
     } else {
         alert("تم حفظ العرض بنجاح!");
         cancelOfferEdit();
@@ -184,7 +148,7 @@ async function deleteOffer(id) {
 }
 
 
-// --- وظائف قسم إدارة الأعضاء (Admins) ---
+// --- إدارة الأعضاء ---
 async function loadAdmins(currentAdminId) {
     const { data, error } = await supabaseClient.from('admins').select('id, role, full_name, user_id');
     if (error) { console.error("Error loading admins:", error); return; }
@@ -195,7 +159,7 @@ async function loadAdmins(currentAdminId) {
             <td>${admin.full_name || 'N/A'}</td>
             <td>${admin.role === 'super_admin' ? 'صاحب الموقع' : 'مساعد'}</td>
             <td class="action-buttons">
-                ${admin.user_id !== currentAdminId ? `<button class="delete-btn" data-id="${admin.id}" data-userid="${admin.user_id}" title="حذف"><i class="fas fa-trash"></i></button>` : ''}
+                ${admin.user_id !== currentAdminId ? `<button class="delete-btn" data-id="${admin.id}" data-userid="${admin.user_id}"><i class="fas fa-trash"></i></button>` : ''}
             </td>
         </tr>
     `).join('');
@@ -204,16 +168,6 @@ async function loadAdmins(currentAdminId) {
 async function handleAddAdmin(e) {
     e.preventDefault();
     alert("تنبيه أمني: إضافة مشرف جديد يجب أن تتم عبر Supabase Edge Function لتأمين المفاتيح السرية.\nهذه محاكاة للعملية فقط.");
-    console.log("Simulating Add Admin...");
-    console.log({
-        email: document.getElementById('admin-email').value,
-        password: 'a-secure-password',
-        full_name: document.getElementById('admin-full-name').value,
-        role: document.getElementById('admin-role-select').value
-    });
-    document.getElementById('add-admin-form').reset();
-    // In a real scenario, you would call an Edge Function here:
-    // const { error } = await supabaseClient.functions.invoke('create-admin-user', { body: { ... } });
 }
 
 async function handleAdminActions(e) {
@@ -222,7 +176,25 @@ async function handleAdminActions(e) {
     
     if (confirm("هل أنت متأكد من حذف هذا العضو؟ سيتم حذف حسابه بالكامل.")) {
         alert("تنبيه أمني: حذف مشرف يجب أن يتم عبر Supabase Edge Function.");
-        // const adminUserId = button.dataset.userid;
-        // const { error } = await supabaseClient.functions.invoke('delete-admin-user', { body: { userId: adminUserId } });
     }
+}
+
+// --- قسم نظرة عامة ---
+async function loadOverviewStats() {
+    const statsGrid = document.getElementById('stats-grid');
+    if (!statsGrid) return;
+    statsGrid.innerHTML = `<div>جاري تحميل الإحصائيات...</div>`;
+
+    const { count: totalUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    const { count: paidUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true }).eq('subscription_status', 'paid');
+    const { data: offers } = await supabaseClient.from('offers').select('price');
+    
+    const estimatedRevenue = (paidUsers || 0) * (offers?.find(o => o.price > 0)?.price || 10);
+
+    statsGrid.innerHTML = `
+        <div class="stat-card"><h4>إجمالي المستخدمين</h4><p>${totalUsers || 0}</p></div>
+        <div class="stat-card"><h4>الاشتراكات المدفوعة</h4><p>${paidUsers || 0}</p></div>
+        <div class="stat-card"><h4>الاشتراكات المجانية</h4><p>${(totalUsers || 0) - (paidUsers || 0)}</p></div>
+        <div class="stat-card"><h4>الأرباح الشهرية (تقديري)</h4><p>${estimatedRevenue} د.ت</p></div>
+    `;
 }
