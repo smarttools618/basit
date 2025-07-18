@@ -1,5 +1,5 @@
 // =======================================================
-// الخطوة 1: إعداد الربط مع Supabase
+// الكود الكامل والنهائي لملف script.js
 // =======================================================
 
 const SUPABASE_URL = 'https://yjujdodudllhlgvhrhsw.supabase.co';
@@ -35,12 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // أيقونات إظهار/إخفاء كلمة السر
     const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+    
+    // عناصر شروط الاستخدام
+    const termsLink = document.getElementById('terms-link');
+    const termsModal = document.getElementById('terms-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const agreeCheckbox = document.getElementById('agree-terms-checkbox');
+    const signupButton = document.getElementById('signup-button');
+
 
     // --- وظيفة التنقل بين الصفحات ---
     function showPage(pageId) {
-        // تأكد من أن حاوية النماذج موجودة قبل محاولة إظهار صفحة
-        if (!authWrapper) return; 
-        
+        if (!authWrapper) return;
         pages.forEach(page => {
             if (page) page.classList.remove('active');
         });
@@ -53,24 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- وظيفة عرض الصفحة الرئيسية للطالب المسجل ---
     function showStudentDashboard(user) {
         if (authWrapper) authWrapper.style.display = 'none';
-        
-        // مسح محتوى الصفحة بالكامل لضمان عدم تداخل العناصر
-        document.body.innerHTML = '';
-        
+        document.body.innerHTML = ''; // تنظيف الصفحة بالكامل
         const firstName = user.user_metadata?.first_name || 'الطالب';
-        const subscription = user.user_metadata?.subscription_type || 'مجاني';
-
         document.body.innerHTML = `
             <div class="dashboard-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; text-align: center; padding: 40px; font-family: 'Tajawal', sans-serif;">
                 <h1>مرحباً بعودتك، ${firstName}!</h1>
-                <p style="font-size: 1.2rem;">أنت مشترك في: <strong>${subscription === 'paid' ? 'العرض المدفوع' : 'العرض المجاني'}</strong></p>
                 <p>هنا ستظهر لوحة التحكم الخاصة بك بالدروس والتمارين.</p>
                 <button id="logout-btn-student" style="background: #ef4444; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">تسجيل الخروج</button>
             </div>
         `;
         document.getElementById('logout-btn-student').addEventListener('click', async () => {
             await supabaseClient.auth.signOut();
-            window.location.href = 'index.html'; // توجيه لصفحة الدخول بعد الخروج
+            window.location.href = 'index.html';
         });
     }
 
@@ -94,15 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = inputs[3].value;
         const level = inputs[4].value;
         
-        const { data, error } = await supabaseClient.auth.signUp({
+        const { error } = await supabaseClient.auth.signUp({
             email, password,
-            options: {
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    level: level
-                }
-            }
+            options: { data: { first_name: firstName, last_name: lastName, level: level } }
         });
 
         if (error) {
@@ -119,26 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputs = e.target.elements;
         const email = inputs[0].value;
         const password = inputs[1].value;
-
         const { data: { user }, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-        if (error) {
-            alert('خطأ في تسجيل الدخول: ' + error.message);
-            return;
-        }
-
+        if (error) { alert('خطأ في تسجيل الدخول: ' + error.message); return; }
         if (user) {
-            const { data: adminData } = await supabaseClient
-                .from('admins')
-                .select('role')
-                .eq('user_id', user.id)
-                .single();
-
+            const { data: adminData } = await supabaseClient.from('admins').select('role').eq('user_id', user.id).single();
             if (adminData) {
-                // نعم، هو مشرف! قم بتوجيهه إلى لوحة التحكم
                 window.location.href = 'dashboard.html';
             } else {
-                // لا، هو طالب عادي. اعرض له لوحة تحكم الطالب
                 showStudentDashboard(user);
             }
         }
@@ -147,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. منطق إظهار/إخفاء كلمة السر
     togglePasswordIcons.forEach(icon => {
         icon.addEventListener('click', () => {
-            const passwordInput = icon.previousElementSibling;
+            const passwordInput = icon.closest('.input-with-icon').querySelector('input');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -160,52 +141,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. نموذج نسيت كلمة السر
-    if (forgotPasswordForm) forgotPasswordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        // ... نفس الكود السابق
-    });
-    
-    // 6. نموذج إعادة تعيين كلمة السر الجديدة
-    supabaseClient.auth.onAuthStateChange(async (event, session) => {
-        if (event === "PASSWORD_RECOVERY") {
-            // ... نفس الكود السابق
-        }
-    });
+    // 5. منطق شروط الاستخدام
+    if (termsLink) {
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            termsModal.classList.add('active');
+        });
+    }
+    function closeModal() {
+        if (termsModal) termsModal.classList.remove('active');
+    }
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (termsModal) {
+        termsModal.addEventListener('click', (e) => {
+            if (e.target === termsModal) closeModal();
+        });
+    }
+    if (agreeCheckbox && signupButton) {
+        agreeCheckbox.addEventListener('change', () => {
+            signupButton.disabled = !agreeCheckbox.checked;
+        });
+    }
 
 
     // =======================================================
     // وظيفة التحقق من الجلسة عند تحميل الصفحة (للتوجيه التلقائي)
     // =======================================================
     async function checkUserSessionAndRedirect() {
-        // 1. احصل على الجلسة الحالية من Supabase (الذي يتحقق من localStorage)
         const { data: { session } } = await supabaseClient.auth.getSession();
-
-        // 2. إذا كان هناك جلسة نشطة (المستخدم مسجل دخوله بالفعل)
         if (session) {
             const user = session.user;
-            
-            // 3. تحقق إذا كان هذا المستخدم مشرفاً
-            const { data: adminData } = await supabaseClient
-                .from('admins')
-                .select('role')
-                .eq('user_id', user.id)
-                .single();
-
-            // 4. قم بالتوجيه بناءً على النتيجة
+            const { data: adminData } = await supabaseClient.from('admins').select('role').eq('user_id', user.id).single();
             if (adminData) {
-                // إذا كان مشرف، وجهه مباشرة إلى لوحة التحكم
-                // تحقق أننا لسنا بالفعل في صفحة التحكم لتجنب التوجيه المتكرر
                 if (!window.location.pathname.includes('dashboard.html')) {
                     window.location.href = 'dashboard.html';
                 }
             } else {
-                // إذا كان طالباً، اعرض له لوحة تحكمه الخاصة
                 showStudentDashboard(user);
             }
         } else {
-            // 5. إذا لم يكن هناك جلسة، اعرض صفحة إنشاء الحساب كالمعتاد
-            showPage('signup-page');
+            showPage('signup-page'); // ابدأ من صفحة إنشاء حساب
         }
     }
 
