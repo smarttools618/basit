@@ -12,13 +12,14 @@
     --border-color: #e5e7eb;
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
     --danger-color: #ef4444;
+    --danger-hover: #dc2626;
 }
 
 body { margin: 0; font-family: 'Tajawal', sans-serif; direction: rtl; background-color: var(--main-bg); }
 .dashboard-layout { display: flex; }
 
 /* ======== الشريط الجانبي ======== */
-.sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--text-inverse); min-height: 100vh; position: fixed; top: 0; right: 0; }
+.sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--text-inverse); min-height: 100vh; position: fixed; top: 0; right: 0; transition: width 0.3s; }
 .sidebar-header { padding: 22px; text-align: center; font-size: 1.8rem; font-weight: 700; border-bottom: 1px solid #374151; color: var(--text-inverse-hover); }
 .sidebar-menu { list-style: none; padding: 0; margin: 20px 0; }
 .sidebar-menu a { display: flex; align-items: center; gap: 15px; padding: 16px 25px; color: var(--text-inverse); text-decoration: none; transition: all 0.2s; font-size: 1rem; border-right: 4px solid transparent; }
@@ -27,7 +28,7 @@ body { margin: 0; font-family: 'Tajawal', sans-serif; direction: rtl; background
 .sidebar-menu a i { width: 20px; text-align: center; font-size: 1.1rem; }
 
 /* ======== المحتوى الرئيسي ======== */
-.main-content { flex: 1; background-color: var(--main-bg); margin-right: 260px; }
+.main-content { flex: 1; background-color: var(--main-bg); margin-right: 260px; transition: margin-right 0.3s; }
 .main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); }
 #logout-btn { background: transparent; color: var(--danger-color); border: 1px solid var(--danger-color); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; }
 #logout-btn:hover { background: var(--danger-color); color: white; }
@@ -37,8 +38,20 @@ body { margin: 0; font-family: 'Tajawal', sans-serif; direction: rtl; background
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .section-header h3 { margin: 0 0 25px 0; font-size: 1.8rem; color: var(--text-color); }
 
+/* ======== بطاقات الإحصائيات (تصميم محسن) ======== */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.stat-card { background-color: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 20px; }
+.stat-card .icon { font-size: 2.2rem; padding: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.stat-card .info h4 { margin: 0 0 8px 0; color: var(--text-light); font-weight: 500; font-size: 1rem; }
+.stat-card .info p { margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-color); }
+.stat-card.users .icon { color: #3b82f6; background-color: #dbeafe; }
+.stat-card.paid .icon { color: #22c55e; background-color: #dcfce7; }
+.stat-card.free .icon { color: #8b5cf6; background-color: #ede9fe; }
+.stat-card.revenue .icon { color: #f59e0b; background-color: #fef3c7; }
+
 /* ======== أقسام الإدارة ======== */
 .management-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
+.management-grid-single-col { max-width: 500px; }
 .management-form { background-color: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md); }
 .management-form h4 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
 .management-form form { display: flex; flex-direction: column; gap: 15px; }

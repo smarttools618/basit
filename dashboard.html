@@ -19,6 +19,7 @@
                 <li><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a></li>
                 <li><a href="#offers" class="nav-link"><i class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
                 <li><a href="#admins" class="nav-link"><i class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
+                <li><a href="#settings" class="nav-link"><i class="fas fa-cog"></i><span>الإعدادات</span></a></li>
             </ul>
         </nav>
 
@@ -32,19 +33,21 @@
             <!-- قسم نظرة عامة -->
             <div id="overview" class="page active">
                 <div class="section-header"><h3>نظرة عامة</h3></div>
-                <div id="stats-grid" class="stats-grid"></div>
+                <div id="stats-grid" class="stats-grid">
+                    <!-- سيتم ملء الإحصائيات هنا عبر JS -->
+                </div>
             </div>
 
-            <!-- قسم إدارة المستخدمين (سيتم تطويره لاحقاً) -->
+            <!-- قسم إدارة المستخدمين -->
             <div id="users" class="page">
                  <div class="section-header"><h3>إدارة المستخدمين</h3></div>
-                 <!-- محتوى إدارة المستخدمين هنا -->
+                 <p>سيتم بناء هذا القسم في المرحلة القادمة.</p>
             </div>
 
-            <!-- قسم إدارة المحتوى (سيتم تطويره لاحقاً) -->
+            <!-- قسم إدارة المحتوى -->
             <div id="content" class="page">
                 <div class="section-header"><h3>إدارة المحتوى</h3></div>
-                <!-- محتوى إدارة المحتوى هنا -->
+                <p>سيتم بناء هذا القسم في المرحلة القادمة.</p>
             </div>
 
             <!-- قسم إدارة العروض -->
@@ -108,6 +111,22 @@
                                 <tbody id="admins-table-body"></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم الإعدادات -->
+            <div id="settings" class="page">
+                <div class="section-header"><h3>إعدادات الحساب</h3></div>
+                <div class="management-grid-single-col">
+                    <div class="management-form">
+                        <h4>تغيير كلمة السر</h4>
+                        <form id="change-password-form">
+                            <p class="form-note">لأسباب أمنية، سيتم تسجيل خروجك بعد تغيير كلمة السر بنجاح.</p>
+                            <input type="password" id="new-password" placeholder="كلمة السر الجديدة" required minlength="6">
+                            <input type="password" id="confirm-password" placeholder="تأكيد كلمة السر الجديدة" required>
+                            <button type="submit">تغيير كلمة السر</button>
+                        </form>
                     </div>
                 </div>
             </div>

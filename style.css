@@ -306,3 +306,15 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow
     .illustration { max-width: 280px; margin-top: 20px; animation-duration: 8s; }
     .form-panel { padding: 40px 20px; }
 }
+/* --- جديد: تكبير مربع الموافقة على الشروط --- */
+.terms-container input[type="checkbox"] {
+    width: 20px; /* زيادة العرض */
+    height: 20px; /* زيادة الارتفاع */
+    cursor: pointer;
+    /* لضمان المحاذاة العمودية مع النص */
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.terms-container label {
+    cursor: pointer;
+}
