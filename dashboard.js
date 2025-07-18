@@ -29,17 +29,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('admin-role').textContent = adminData.role === 'super_admin' ? 'صاحب الموقع' : 'مساعد';
 
     // 3. إعداد التنقل بين التبويبات
-    setupNavigation();
+    setupNavigation(adminData.role);
 
     // 4. تحميل البيانات بناءً على دور المشرف
-    initializeDashboard(adminData.role);
+    initializeDashboard(adminData.role, user.id);
 
     // 5. ربط الأحداث (Event Listeners)
     setupEventListeners();
 });
 
-// --- إعداد التنقل والواجهة ---
-function setupNavigation() {
+
+// --- وظائف إعداد الواجهة والتنقل ---
+function setupNavigation(role) {
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
 
@@ -55,58 +56,48 @@ function setupNavigation() {
             document.getElementById(targetId).classList.add('active');
         });
     });
-}
 
-function initializeDashboard(role) {
-    if (role === 'super_admin') {
-        // صاحب الموقع يرى كل شيء
-        loadOverviewStats();
-        // يمكنك استدعاء دوال تحميل باقي الأقسام هنا
-        populateLevelDropdown();
-    } else if (role === 'assistant') {
-        // المساعد يرى أقساماً محددة فقط (يمكن تخصيصها)
-        // مثال: إخفاء قسم إدارة الأعضاء والعروض
+    if (role === 'assistant') {
         document.querySelector('a[href="#admins"]').parentElement.style.display = 'none';
         document.querySelector('a[href="#offers"]').parentElement.style.display = 'none';
-        // يمكنك تحميل البيانات التي يحتاجها المساعد هنا
+    }
+}
+
+function initializeDashboard(role, currentAdminId) {
+    if (role === 'super_admin') {
+        loadOverviewStats();
+        loadOffers();
+        loadAdmins(currentAdminId);
+        // يمكنك إضافة دوال تحميل الأقسام الأخرى هنا
     }
 }
 
 function setupEventListeners() {
-    // تسجيل الخروج
     document.getElementById('logout-btn').addEventListener('click', async () => {
         await supabaseClient.auth.signOut();
         window.location.href = 'index.html';
     });
 
-    // نموذج إضافة المحتوى
-    const addContentForm = document.getElementById('add-content-form');
-    if(addContentForm) {
-        addContentForm.addEventListener('submit', handleAddContent);
-    }
-    // يمكنك إضافة باقي الـ event listeners هنا (للفلاتر، البحث، الخ)
+    document.getElementById('offer-form').addEventListener('submit', handleOfferSubmit);
+    document.getElementById('cancel-edit-offer').addEventListener('click', cancelOfferEdit);
+    document.getElementById('offers-table-body').addEventListener('click', handleOfferActions);
+    document.getElementById('add-admin-form').addEventListener('submit', handleAddAdmin);
+    document.getElementById('admins-table-body').addEventListener('click', handleAdminActions);
 }
 
-// --- وظائف تحميل البيانات (Data Loading) ---
+
+// --- وظائف قسم نظرة عامة (Overview) ---
 async function loadOverviewStats() {
     const statsGrid = document.getElementById('stats-grid');
     if (!statsGrid) return;
     statsGrid.innerHTML = `<div>جاري تحميل الإحصائيات...</div>`;
 
-    // جلب عدد المستخدمين
-    const { count: totalUsers, error: totalErr } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
-    const { count: paidUsers, error: paidErr } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true }).eq('subscription_status', 'paid');
+    const { count: totalUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    const { count: paidUsers } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true }).eq('subscription_status', 'paid');
+    const { data: offers } = await supabaseClient.from('offers').select('price');
     
-    if (totalErr || paidErr) {
-        statsGrid.innerHTML = `<div>خطأ في تحميل الإحصائيات</div>`;
-        return;
-    }
-
-    // جلب سعر الاشتراك المدفوع (نفترض أن له id = 1)
-    const { data: offerData, error: offerErr } = await supabaseClient.from('offers').select('price').eq('id', 1).single();
-    const offerPrice = offerData?.price || 10; // سعر افتراضي 10 إذا لم يتم العثور عليه
-    
-    const estimatedRevenue = (paidUsers || 0) * offerPrice;
+    // حساب تقديري للأرباح بناء على كل العروض المدفوعة
+    const estimatedRevenue = (paidUsers || 0) * (offers?.find(o => o.price > 0)?.price || 10);
 
     statsGrid.innerHTML = `
         <div class="stat-card"><h4>إجمالي المستخدمين</h4><p>${totalUsers || 0}</p></div>
@@ -117,49 +108,121 @@ async function loadOverviewStats() {
 }
 
 
-// --- وظائف إدارة المحتوى ---
-function populateLevelDropdown() {
-    const levelDropdown = document.getElementById('content-level');
-    if (!levelDropdown) return;
+// --- وظائف قسم إدارة العروض (Offers) ---
+async function loadOffers() {
+    const { data, error } = await supabaseClient.from('offers').select('*').order('price');
+    if (error) { console.error("Error loading offers:", error); return; }
     
-    for (let i = 1; i <= 6; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `السنة ${i} ابتدائي`;
-        levelDropdown.appendChild(option);
+    const tableBody = document.getElementById('offers-table-body');
+    tableBody.innerHTML = data.map(offer => `
+        <tr data-offer='${JSON.stringify(offer)}'>
+            <td>${offer.name}</td>
+            <td>${offer.price} د.ت</td>
+            <td>${offer.duration_days === 30 ? 'شهري' : 'سنوي'}</td>
+            <td class="action-buttons">
+                <button class="edit-btn" data-id="${offer.id}" title="تعديل"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${offer.id}" title="حذف"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function handleOfferSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const offerId = form.querySelector('#offer-id').value;
+    const offerData = {
+        name: form.querySelector('#offer-name').value,
+        price: form.querySelector('#offer-price').value,
+        duration_days: form.querySelector('#offer-duration').value,
+        description: form.querySelector('#offer-description').value,
+    };
+
+    const { error } = offerId
+        ? await supabaseClient.from('offers').update(offerData).eq('id', offerId)
+        : await supabaseClient.from('offers').insert([offerData]);
+
+    if (error) {
+        alert("خطأ في حفظ العرض: " + error.message);
+    } else {
+        alert("تم حفظ العرض بنجاح!");
+        cancelOfferEdit();
+        loadOffers();
     }
 }
 
-async function handleAddContent(event) {
-    event.preventDefault();
-    const form = event.target;
+function handleOfferActions(e) {
+    const button = e.target.closest('button');
+    if (!button) return;
+    const id = button.dataset.id;
+    if (button.classList.contains('edit-btn')) {
+        const row = button.closest('tr');
+        const offer = JSON.parse(row.dataset.offer);
+        document.getElementById('offer-id').value = offer.id;
+        document.getElementById('offer-name').value = offer.name;
+        document.getElementById('offer-price').value = offer.price;
+        document.getElementById('offer-duration').value = offer.duration_days;
+        document.getElementById('offer-description').value = offer.description;
+        document.getElementById('cancel-edit-offer').classList.remove('hidden');
+    } else if (button.classList.contains('delete-btn')) {
+        if (confirm("هل أنت متأكد من حذف هذا العرض؟")) {
+            deleteOffer(id);
+        }
+    }
+}
+
+function cancelOfferEdit() {
+    document.getElementById('offer-form').reset();
+    document.getElementById('offer-id').value = '';
+    document.getElementById('cancel-edit-offer').classList.add('hidden');
+}
+
+async function deleteOffer(id) {
+    const { error } = await supabaseClient.from('offers').delete().eq('id', id);
+    if (error) { alert("خطأ في حذف العرض: " + error.message); } 
+    else { loadOffers(); }
+}
+
+
+// --- وظائف قسم إدارة الأعضاء (Admins) ---
+async function loadAdmins(currentAdminId) {
+    const { data, error } = await supabaseClient.from('admins').select('id, role, full_name, user_id');
+    if (error) { console.error("Error loading admins:", error); return; }
+
+    const tableBody = document.getElementById('admins-table-body');
+    tableBody.innerHTML = data.map(admin => `
+        <tr>
+            <td>${admin.full_name || 'N/A'}</td>
+            <td>${admin.role === 'super_admin' ? 'صاحب الموقع' : 'مساعد'}</td>
+            <td class="action-buttons">
+                ${admin.user_id !== currentAdminId ? `<button class="delete-btn" data-id="${admin.id}" data-userid="${admin.user_id}" title="حذف"><i class="fas fa-trash"></i></button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function handleAddAdmin(e) {
+    e.preventDefault();
+    alert("تنبيه أمني: إضافة مشرف جديد يجب أن تتم عبر Supabase Edge Function لتأمين المفاتيح السرية.\nهذه محاكاة للعملية فقط.");
+    console.log("Simulating Add Admin...");
+    console.log({
+        email: document.getElementById('admin-email').value,
+        password: 'a-secure-password',
+        full_name: document.getElementById('admin-full-name').value,
+        role: document.getElementById('admin-role-select').value
+    });
+    document.getElementById('add-admin-form').reset();
+    // In a real scenario, you would call an Edge Function here:
+    // const { error } = await supabaseClient.functions.invoke('create-admin-user', { body: { ... } });
+}
+
+async function handleAdminActions(e) {
+    const button = e.target.closest('button');
+    if (!button || !button.classList.contains('delete-btn')) return;
     
-    const title = form.querySelector('#content-title').value;
-    const gdriveLink = form.querySelector('#gdrive-link').value;
-    const category = form.querySelector('#content-category').value;
-    const level = form.querySelector('#content-level').value;
-    const trimester = form.querySelector('#content-trimester').value;
-
-    // تحويل رابط جوجل درايف من رابط عرض إلى رابط تحميل مباشر
-    const downloadLink = gdriveLink.replace('/view?usp=sharing', '/preview').replace('/file/d/', '/uc?id=').replace('/view', '/uc?export=download&id=');
-    
-    const newContent = {
-        title,
-        gdrive_link: downloadLink,
-        category,
-        level,
-        trimester,
-        // subject_id سيتم إضافته لاحقاً
-    };
-
-    const { data, error } = await supabaseClient.from('content').insert([newContent]);
-
-    if (error) {
-        console.error('Error adding content:', error);
-        alert('حدث خطأ أثناء إضافة المحتوى. راجع الـ console.');
-    } else {
-        alert('تم إضافة المحتوى بنجاح!');
-        form.reset();
-        // يمكنك هنا استدعاء دالة لإعادة تحميل قائمة المحتوى
+    if (confirm("هل أنت متأكد من حذف هذا العضو؟ سيتم حذف حسابه بالكامل.")) {
+        alert("تنبيه أمني: حذف مشرف يجب أن يتم عبر Supabase Edge Function.");
+        // const adminUserId = button.dataset.userid;
+        // const { error } = await supabaseClient.functions.invoke('delete-admin-user', { body: { userId: adminUserId } });
     }
 }

@@ -12,9 +12,7 @@
     <div class="dashboard-layout">
         <!-- القائمة الجانبية للتنقل -->
         <nav class="sidebar">
-            <div class="sidebar-header">
-                <h3>بسيط</h3>
-            </div>
+            <div class="sidebar-header"><h3>بسيط</h3></div>
             <ul class="sidebar-menu">
                 <li><a href="#overview" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>نظرة عامة</span></a></li>
                 <li><a href="#users" class="nav-link"><i class="fas fa-users"></i><span>المستخدمون</span></a></li>
@@ -31,48 +29,90 @@
                 <button id="logout-btn">تسجيل الخروج</button>
             </header>
 
-            <!-- قسم نظرة عامة (الإحصائيات والأرباح) -->
+            <!-- قسم نظرة عامة -->
             <div id="overview" class="page active">
                 <div class="section-header"><h3>نظرة عامة</h3></div>
-                <div id="stats-grid" class="stats-grid">
-                    <!-- سيتم ملء الإحصائيات هنا -->
-                </div>
+                <div id="stats-grid" class="stats-grid"></div>
             </div>
 
-            <!-- قسم إدارة المستخدمين -->
+            <!-- قسم إدارة المستخدمين (سيتم تطويره لاحقاً) -->
             <div id="users" class="page">
-                <div class="section-header"><h3>إدارة المستخدمين</h3></div>
-                <!-- أدوات التحكم بالجدول (نفس الكود السابق) -->
+                 <div class="section-header"><h3>إدارة المستخدمين</h3></div>
+                 <!-- محتوى إدارة المستخدمين هنا -->
             </div>
 
-            <!-- قسم إدارة المحتوى -->
+            <!-- قسم إدارة المحتوى (سيتم تطويره لاحقاً) -->
             <div id="content" class="page">
                 <div class="section-header"><h3>إدارة المحتوى</h3></div>
-                <div class="content-management">
-                    <div class="add-content-form">
-                        <h4>إضافة محتوى جديد</h4>
-                        <form id="add-content-form">
-                            <input type="text" id="content-title" placeholder="عنوان الملف" required>
-                            <input type="url" id="gdrive-link" placeholder="رابط Google Drive (للمعاينة)" required>
-                            <select id="content-category" required><option value="">اختر النوع</option><option value="exercise">تمرين</option><option value="summary">ملخص</option></select>
-                            <select id="content-level" required><option value="">اختر المستوى</option><!-- سيتم ملؤها --></select>
-                            <select id="content-trimester" required><option value="">اختر الثلاثي</option><option value="1">الثلاثي 1</option><option value="2">الثلاثي 2</option><option value="3">الثلاثي 3</option></select>
-                            <button type="submit">حفظ المحتوى</button>
+                <!-- محتوى إدارة المحتوى هنا -->
+            </div>
+
+            <!-- قسم إدارة العروض -->
+            <div id="offers" class="page">
+                <div class="section-header"><h3>إدارة العروض</h3></div>
+                <div class="management-grid">
+                    <div class="management-form">
+                        <h4>إضافة / تعديل عرض</h4>
+                        <form id="offer-form">
+                            <input type="hidden" id="offer-id">
+                            <input type="text" id="offer-name" placeholder="اسم العرض (مثال: الباقة الشهرية)" required>
+                            <input type="number" id="offer-price" placeholder="سعر الاشتراك (د.ت)" required>
+                            <select id="offer-duration" required>
+                                <option value="" disabled selected>اختر مدة الاشتراك</option>
+                                <option value="30">شهري</option>
+                                <option value="365">سنوي</option>
+                            </select>
+                            <textarea id="offer-description" placeholder="وصف العرض والمميزات..." rows="4"></textarea>
+                            <button type="submit">حفظ العرض</button>
+                            <button type="button" id="cancel-edit-offer" class="hidden">إلغاء التعديل</button>
                         </form>
                     </div>
-                    <div class="content-list">
-                        <h4>قائمة المحتوى</h4>
-                        <!-- سيتم عرض جدول المحتوى هنا -->
+                    <div class="management-list">
+                        <h4>العروض الحالية</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>اسم العرض</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr>
+                                </thead>
+                                <tbody id="offers-table-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
-             <!-- باقي الأقسام (سيتم بناؤها لاحقاً) -->
-            <div id="offers" class="page"></div>
-            <div id="admins" class="page"></div>
+            <!-- قسم إدارة الأعضاء -->
+            <div id="admins" class="page">
+                <div class="section-header"><h3>إدارة الأعضاء (المساعدين)</h3></div>
+                <div class="management-grid">
+                    <div class="management-form">
+                        <h4>إضافة عضو جديد</h4>
+                        <form id="add-admin-form">
+                            <input type="text" id="admin-full-name" placeholder="الاسم الكامل للعضو" required>
+                            <input type="email" id="admin-email" placeholder="البريد الإلكتروني" required>
+                            <input type="password" id="admin-password" placeholder="كلمة سر مؤقتة" required>
+                            <select id="admin-role-select" required>
+                                <option value="assistant" selected>مساعد</option>
+                            </select>
+                            <p class="form-note">ملاحظة: سيتم إنشاء حساب للعضو بكلمة السر هذه ويمكنه تغييرها لاحقاً.</p>
+                            <button type="submit">إضافة عضو</button>
+                        </form>
+                    </div>
+                    <div class="management-list">
+                        <h4>الأعضاء الحاليون</h4>
+                        <div class="table-wrapper">
+                             <table>
+                                <thead>
+                                    <tr><th>الاسم</th><th>الدور</th><th>إجراءات</th></tr>
+                                </thead>
+                                <tbody id="admins-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
 </body>
