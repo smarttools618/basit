@@ -1,0 +1,15 @@
+/* هذا الملف لتخصيص أي شيء خاص بلوحة المساعد فقط */
+.status-badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: white;
+}
+.status-badge.pending { background-color: #f59e0b; }
+.status-badge.approved { background-color: #22c55e; }
+.status-badge.rejected { background-color: #ef4444; }
+
+/* إخفاء أزرار الحذف للمحتوى الموافق عليه */
+tr[data-status="approved"] .delete-btn {
+    display: none;
+}

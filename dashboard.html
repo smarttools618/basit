@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,105 +9,148 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="dashboard_style.css">
 </head>
+
 <body>
+    <div id="loader" class="loader-overlay" style="display: none;">
+        <div class="loader-spinner"></div>
+    </div>
+
     <div class="dashboard-layout">
         <!-- القائمة الجانبية للتنقل -->
         <nav class="sidebar">
-            <div class="sidebar-header"><h3>بسيط</h3></div>
+            <div class="sidebar-header">
+                <h3>بسيط</h3>
+            </div>
             <ul class="sidebar-menu">
-                <li><a href="#overview" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>نظرة عامة</span></a></li>
-                <li><a href="#users" class="nav-link"><i class="fas fa-users"></i><span>المستخدمون</span></a></li>
-                <li><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a></li>
-                <li><a href="#offers" class="nav-link"><i class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
-                <li><a href="#admins" class="nav-link"><i class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
+                <li><a href="#overview" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>نظرة
+                            عامة</span></a></li>
+                <li><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a>
+                </li>
+                <li class="admin-only" style="display: none;"><a href="#users" class="nav-link"><i
+                            class="fas fa-users"></i><span>إدارة المستخدمين</span></a></li>
+                <li class="admin-only" style="display: none;"><a href="#offers" class="nav-link"><i
+                            class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
+                <li class="super-admin-only" style="display: none;"><a href="#admins" class="nav-link"><i
+                            class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
                 <li><a href="#settings" class="nav-link"><i class="fas fa-cog"></i><span>الإعدادات</span></a></li>
             </ul>
+            <div class="sidebar-footer">
+                <p>مرحباً, <strong id="admin-name">...</strong></p>
+                <p id="admin-role" class="role-badge"></p>
+                <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+            </div>
         </nav>
 
         <!-- المحتوى الرئيسي -->
         <main class="main-content">
-            <header class="main-header">
-                <p>مرحباً <span id="admin-name"></span> (<span id="admin-role"></span>)</p>
-                <button id="logout-btn">تسجيل الخروج</button>
-            </header>
-
             <!-- قسم نظرة عامة -->
             <div id="overview" class="page active">
-                <div class="section-header"><h3>نظرة عامة</h3></div>
-                <div id="stats-grid" class="stats-grid">
-                    <!-- سيتم ملء الإحصائيات هنا عبر JS -->
+                <div class="section-header">
+                    <h3>نظرة عامة</h3>
                 </div>
-            </div>
-
-            <!-- قسم إدارة المستخدمين -->
-            <div id="users" class="page">
-                 <div class="section-header"><h3>إدارة المستخدمين</h3></div>
-                 <p>سيتم بناء هذا القسم في المرحلة القادمة.</p>
+                <div id="stats-grid" class="stats-grid"><!-- سيتم ملؤه بواسطة JS --></div>
             </div>
 
             <!-- قسم إدارة المحتوى -->
             <div id="content" class="page">
-                <div class="section-header"><h3>إدارة المحتوى</h3></div>
-                <p>سيتم بناء هذا القسم في المرحلة القادمة.</p>
-            </div>
-
-            <!-- قسم إدارة العروض -->
-            <div id="offers" class="page">
-                <div class="section-header"><h3>إدارة العروض</h3></div>
-                <div class="management-grid">
-                    <div class="management-form">
-                        <h4>إضافة / تعديل عرض</h4>
-                        <form id="offer-form">
-                            <input type="hidden" id="offer-id">
-                            <input type="text" id="offer-name" placeholder="اسم العرض (مثال: الباقة الشهرية)" required>
-                            <input type="number" id="offer-price" placeholder="سعر الاشتراك (د.ت)" required>
-                            <select id="offer-duration" required>
-                                <option value="" disabled selected>اختر مدة الاشتراك</option>
-                                <option value="30">شهري</option>
-                                <option value="365">سنوي</option>
-                            </select>
-                            <textarea id="offer-description" placeholder="وصف العرض والمميزات..." rows="4"></textarea>
-                            <button type="submit">حفظ العرض</button>
-                            <button type="button" id="cancel-edit-offer" class="hidden">إلغاء التعديل</button>
-                        </form>
+                <div class="section-header">
+                    <h3>إدارة المحتوى</h3>
+                </div>
+                <div class="tabs">
+                    <button class="tab-link active" data-tab="pending-content">قيد المراجعة <span
+                            id="pending-count-badge" class="badge">0</span></button>
+                    <button class="tab-link" data-tab="approved-content">المحتوى المنشور</button>
+                </div>
+                <div id="pending-content" class="tab-content active">
+                    <h4>محتوى ينتظر الموافقة</h4>
+                    <div class="table-wrapper">
+                        <table id="pending-content-table">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>المستوى</th>
+                                    <th>المادة</th>
+                                    <th>أضيف بواسطة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5">لا يوجد محتوى للمراجعة حالياً.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="management-list">
-                        <h4>العروض الحالية</h4>
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr><th>اسم العرض</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr>
-                                </thead>
-                                <tbody id="offers-table-body"></tbody>
-                            </table>
-                        </div>
+                </div>
+                <div id="approved-content" class="tab-content">
+                    <h4>المحتوى الموافق عليه</h4>
+                    <div class="table-wrapper">
+                        <table id="approved-content-table">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>المستوى</th>
+                                    <th>المادة</th>
+                                    <th>أضيف بواسطة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5">لا يوجد محتوى منشور حالياً.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- قسم إدارة الأعضاء -->
-            <div id="admins" class="page">
-                <div class="section-header"><h3>إدارة الأعضاء (المساعدين)</h3></div>
+            <!-- قسم إدارة المستخدمين -->
+            <div id="users" class="page admin-only" style="display: none;">
+                <div class="section-header">
+                    <h3>إدارة المستخدمين</h3>
+                </div>
+                <p>سيتم بناء هذا القسم في المرحلة القادمة.</p>
+            </div>
+
+            <!-- قسم إدارة العروض -->
+            <div id="offers" class="page admin-only" style="display: none;">
+                <div class="section-header">
+                    <h3>إدارة العروض</h3>
+                </div>
+                <!-- محتوى إدارة العروض هنا -->
+            </div>
+
+            <!-- قسم إدارة الأعضاء (خاص بالـ Super Admin) -->
+            <div id="admins" class="page super-admin-only" style="display: none;">
+                <div class="section-header">
+                    <h3>إدارة الأعضاء</h3>
+                </div>
                 <div class="management-grid">
                     <div class="management-form">
                         <h4>إضافة عضو جديد</h4>
                         <form id="add-admin-form">
                             <input type="text" id="admin-full-name" placeholder="الاسم الكامل للعضو" required>
                             <input type="email" id="admin-email" placeholder="البريد الإلكتروني" required>
-                            <input type="password" id="admin-password" placeholder="كلمة سر مؤقتة" required>
+                            <input type="password" id="admin-password" placeholder="كلمة سر مؤقتة (6+ أحرف)" required
+                                minlength="6">
                             <select id="admin-role-select" required>
-                                <option value="assistant" selected>مساعد</option>
+                                <option value="assistant" selected>مساعد (Assistant)</option>
+                                <option value="admin">مدير (Admin)</option>
                             </select>
-                            <p class="form-note">ملاحظة: سيتم إنشاء حساب للعضو بكلمة السر هذه ويمكنه تغييرها لاحقاً.</p>
                             <button type="submit">إضافة عضو</button>
                         </form>
                     </div>
                     <div class="management-list">
                         <h4>الأعضاء الحاليون</h4>
                         <div class="table-wrapper">
-                             <table>
+                            <table>
                                 <thead>
-                                    <tr><th>الاسم</th><th>الدور</th><th>إجراءات</th></tr>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>الدور</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
                                 </thead>
                                 <tbody id="admins-table-body"></tbody>
                             </table>
@@ -114,16 +158,19 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- قسم الإعدادات -->
             <div id="settings" class="page">
-                <div class="section-header"><h3>إعدادات الحساب</h3></div>
+                <div class="section-header">
+                    <h3>إعدادات الحساب</h3>
+                </div>
                 <div class="management-grid-single-col">
                     <div class="management-form">
                         <h4>تغيير كلمة السر</h4>
                         <form id="change-password-form">
                             <p class="form-note">لأسباب أمنية، سيتم تسجيل خروجك بعد تغيير كلمة السر بنجاح.</p>
-                            <input type="password" id="new-password" placeholder="كلمة السر الجديدة" required minlength="6">
+                            <input type="password" id="new-password" placeholder="كلمة السر الجديدة" required
+                                minlength="6">
                             <input type="password" id="confirm-password" placeholder="تأكيد كلمة السر الجديدة" required>
                             <button type="submit">تغيير كلمة السر</button>
                         </form>
@@ -135,4 +182,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
 </body>
+
 </html>
