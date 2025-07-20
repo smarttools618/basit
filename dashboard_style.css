@@ -1,73 +1,94 @@
-/* ======== ملف أنماط لوحة التحكم (تصميم احترافي كامل) ======== */
+/* ======== ملف أنماط لوحة التحكم (تصميم عصري 2024) ======== */
 :root {
     --primary-color: #0059ff;
     --primary-hover: #0048cc;
+    --primary-light: #e0e7ff;
     --sidebar-bg: #111827;
     --main-bg: #f3f4f6;
     --card-bg: #ffffff;
     --text-color: #1f2937;
     --text-light: #6b7280;
-    --text-inverse: #e5e7eb;
+    --text-inverse: #d1d5db;
     --text-inverse-hover: #ffffff;
     --border-color: #e5e7eb;
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --danger-color: #ef4444;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
 }
 
 body { margin: 0; font-family: 'Tajawal', sans-serif; direction: rtl; background-color: var(--main-bg); }
 .dashboard-layout { display: flex; }
 
 /* ======== الشريط الجانبي ======== */
-.sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--text-inverse); min-height: 100vh; position: fixed; top: 0; right: 0; }
-.sidebar-header { padding: 22px; text-align: center; font-size: 1.8rem; font-weight: 700; border-bottom: 1px solid #374151; color: var(--text-inverse-hover); }
+.sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--text-inverse); min-height: 100vh; position: fixed; top: 0; right: 0; transition: width 0.3s; }
+.sidebar-header { padding: 22px; text-align: center; font-size: 1.8rem; font-weight: 700; border-bottom: 1px solid #374151; color: var(--text-inverse-hover); letter-spacing: 1px; }
 .sidebar-menu { list-style: none; padding: 0; margin: 20px 0; }
 .sidebar-menu a { display: flex; align-items: center; gap: 15px; padding: 16px 25px; color: var(--text-inverse); text-decoration: none; transition: all 0.2s; font-size: 1rem; border-right: 4px solid transparent; }
-.sidebar-menu a:hover { background-color: #1f2937; color: var(--text-inverse-hover); }
-.sidebar-menu a.active { background-color: var(--primary-color); color: var(--text-inverse-hover); font-weight: 500; }
-.sidebar-menu a i { width: 20px; text-align: center; font-size: 1.1rem; }
+.sidebar-menu a:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--text-inverse-hover); }
+.sidebar-menu a.active { background: linear-gradient(90deg, var(--primary-color) 0%, rgba(0,89,255,0.4) 100%); color: var(--text-inverse-hover); font-weight: 700; border-right-color: var(--primary-hover); }
+.sidebar-menu a i { width: 20px; text-align: center; font-size: 1.2rem; }
 
 /* ======== المحتوى الرئيسي ======== */
-.main-content { flex: 1; background-color: var(--main-bg); margin-right: 260px; }
-.main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); }
-#logout-btn { background: transparent; color: var(--danger-color); border: 1px solid var(--danger-color); /* ... */ }
-#logout-btn:hover { background: var(--danger-color); color: white; }
+.main-content { flex: 1; background-color: var(--main-bg); margin-right: 260px; transition: margin-right 0.3s; }
+.main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
+#logout-btn { background: var(--danger-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+#logout-btn:hover { background: #cc2222; transform: translateY(-1px); }
 
 .page { display: none; padding: 30px; }
 .page.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.section-header h3 { margin: 0 0 25px 0; font-size: 1.8rem; color: var(--text-color); }
+.section-header h3 { margin: 0 0 25px 0; font-size: 2rem; font-weight: 700; color: var(--text-color); }
 
-/* ======== أقسام الإدارة ======== */
-.management-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
-.management-form { background-color: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md); }
-.management-form h4 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
-.management-form form { display: flex; flex-direction: column; gap: 15px; }
-.management-form input, .management-form select, .management-form textarea, .management-form button { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Tajawal', sans-serif; font-size: 1rem; box-sizing: border-box; }
-.management-form button[type="submit"] { background-color: var(--primary-color); color: white; cursor: pointer; border: none; transition: background-color 0.3s; }
-.management-form button[type="submit"]:hover { background-color: var(--primary-hover); }
-.management-form .form-note { font-size: 0.8rem; color: var(--text-light); }
-#cancel-edit-offer.hidden { display: none; }
-.management-list { background-color: var(--card-bg); padding: 0; border-radius: 12px; box-shadow: var(--shadow-md); overflow: hidden; }
-.management-list h4 { padding: 20px 25px; margin: 0; border-bottom: 1px solid var(--border-color); }
+/* ======== بطاقات الإحصائيات ======== */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+.stat-card { background-color: var(--card-bg); border-radius: 16px; padding: 25px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 20px; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border-color); }
+.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.stat-icon { font-size: 1.8rem; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background-color: var(--primary-light); color: var(--primary-color); }
+.stat-info h4 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-light); font-weight: 500; }
+.stat-info p { margin: 0; font-size: 2.2rem; font-weight: 700; color: var(--text-color); }
+
+/* ======== أقسام الإدارة ونماذج الإدخال ======== */
+.management-grid { display: grid; grid-template-columns: 400px 1fr; gap: 30px; }
+.management-form { background-color: var(--card-bg); padding: 30px; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+.management-form h4 { margin-top: 0; font-size: 1.4rem; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 25px; }
+.management-form form { display: flex; flex-direction: column; gap: 20px; }
+.management-form .input-with-icon { position: relative; }
+.management-form .input-with-icon i { position: absolute; top: 50%; left: 15px; transform: translateY(-50%); color: var(--text-light); pointer-events: none; }
+.management-form input, .management-form select, .management-form textarea { width: 100%; padding: 14px 20px 14px 45px; border-radius: 10px; border: 1px solid var(--border-color); font-family: 'Tajawal', sans-serif; font-size: 1rem; box-sizing: border-box; background-color: #f9fafb; transition: all 0.2s; }
+.management-form input:focus, .management-form select:focus, .management-form textarea:focus { outline: none; border-color: var(--primary-color); background-color: white; box-shadow: 0 0 0 3px var(--primary-light); }
+.management-form button[type="submit"] { background-color: var(--primary-color); color: white; cursor: pointer; border: none; transition: all 0.3s; padding: 14px; font-size: 1.1rem; font-weight: 700; border-radius: 10px; }
+.management-form button[type="submit"]:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.management-form .form-note { font-size: 0.85rem; color: var(--text-light); text-align: center; }
+.hidden { display: none; }
+
+.management-list { background-color: var(--card-bg); padding: 0; border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid var(--border-color); }
+.management-list h4 { padding: 25px; margin: 0; border-bottom: 1px solid var(--border-color); font-size: 1.4rem; }
 
 /* ======== تصميم الجداول ======== */
 .table-wrapper { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 15px 25px; text-align: right; vertical-align: middle; }
-th { background-color: #f9fafb; font-weight: 600; color: var(--text-light); font-size: 0.85rem; }
+th, td { padding: 16px 25px; text-align: right; vertical-align: middle; white-space: nowrap; }
+th { background-color: #f9fafb; font-weight: 700; color: var(--text-light); font-size: 0.9rem; text-transform: uppercase; }
 tbody tr { border-bottom: 1px solid var(--border-color); }
 tbody tr:last-child { border-bottom: none; }
-.action-buttons button { background: none; border: none; cursor: pointer; padding: 5px; font-size: 0.9rem; }
-.action-buttons .edit-btn { color: var(--primary-color); }
-.action-buttons .delete-btn { color: var(--danger-color); }
+tbody tr:hover { background-color: #f9fafb; }
+.action-buttons button { background: transparent; border: 1px solid transparent; cursor: pointer; padding: 8px; width: 36px; height: 36px; border-radius: 50%; margin: 0 2px; transition: all 0.2s; }
+.action-buttons button i { font-size: 1rem; }
+.action-buttons .edit-btn:hover { background-color: var(--primary-light); color: var(--primary-hover); border-color: var(--primary-light); }
+.action-buttons .delete-btn:hover { background-color: #fee2e2; color: #b91c1c; border-color: #fee2e2; }
+.action-buttons .approve-btn:hover { background-color: #d1fae5; color: #047857; border-color: #d1fae5; }
+.action-buttons .reject-btn:hover { background-color: #fee2e2; color: #b91c1c; border-color: #fee2e2; }
 
 /* ======== تصميم متجاوب ======== */
 @media (max-width: 1200px) {
     .management-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-    .sidebar { width: 70px; }
-    .sidebar-header h3, .sidebar-menu span { display: none; }
-    .main-content { margin-right: 70px; }
-    .sidebar-menu a { justify-content: center; }
+    .sidebar { width: 0; padding: 0; overflow: hidden; } /* إخفاء الشريط */
+    .main-content { margin-right: 0; }
+    .section-header h3 {font-size: 1.6rem;}
+    /* يمكن إضافة زر لفتح/إغلاق القائمة لاحقاً */
 }

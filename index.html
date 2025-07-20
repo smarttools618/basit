@@ -22,20 +22,20 @@
                     <form id="signup-form">
                         <div class="input-with-icon">
                             <i class="fa-solid fa-user"></i>
-                            <input type="text" placeholder="الاسم" required>
+                            <input type="text" placeholder="الاسم" required autocomplete="given-name">
                         </div>
                         <div class="input-with-icon">
                              <i class="fa-solid fa-user-tag"></i>
-                            <input type="text" placeholder="اللقب" required>
+                            <input type="text" placeholder="اللقب" required autocomplete="family-name">
                         </div>
                         <div class="input-with-icon">
                              <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required>
+                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="email">
                         </div>
                         <!-- تحديث حقل كلمة السر -->
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر" required>
+                            <input type="password" placeholder="كلمة السر" required autocomplete="new-password">
                             <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                         <div class="input-with-icon">
@@ -64,12 +64,12 @@
                     <form id="login-form">
                         <div class="input-with-icon">
                              <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required>
+                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="username">
                         </div>
                          <!-- تحديث حقل كلمة السر -->
                          <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر" required>
+                            <input type="password" placeholder="كلمة السر" required autocomplete="current-password">
                             <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                         <button type="submit">تسجيل الدخول</button>
@@ -81,27 +81,25 @@
                 </div>
             </div>
             
-            <!-- صفحة إعادة تعيين كلمة السر -->
+            <!-- الصفحات الأخرى تبقى كما هي -->
             <div id="reset-password-page" class="page">
                  <div class="form-container">
                     <h2 class="form-title">اختر كلمة سر جديدة</h2>
                     <form id="reset-password-form">
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر الجديدة" required>
+                            <input type="password" placeholder="كلمة السر الجديدة" required autocomplete="new-password">
                             <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                          <div class="input-with-icon">
                             <i class="fa-solid fa-check-double"></i>
-                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
+                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required autocomplete="new-password">
                             <i class="fa-solid fa-eye toggle-password"></i>
                         </div>
                         <button type="submit">تغيير كلمة السر</button>
                     </form>
                 </div>
             </div>
-
-            <!-- الصفحات الأخرى تبقى كما هي -->
             <div id="forgot-password-page" class="page">
                  <div class="form-container">
                     <h2 class="form-title">إعادة تعيين كلمة السر</h2>
@@ -109,7 +107,7 @@
                     <form id="forgot-password-form">
                         <div class="input-with-icon">
                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required>
+                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="email">
                         </div>
                         <button type="submit">إرسال الرابط</button>
                     </form>

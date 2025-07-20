@@ -14,11 +14,23 @@
         <nav class="sidebar">
             <div class="sidebar-header"><h3>بسيط</h3></div>
             <ul class="sidebar-menu">
-                <li><a href="#overview" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>نظرة عامة</span></a></li>
-                <li><a href="#users" class="nav-link"><i class="fas fa-users"></i><span>المستخدمون</span></a></li>
-                <li><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a></li>
-                <li><a href="#offers" class="nav-link"><i class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
-                <li><a href="#admins" class="nav-link"><i class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
+                <!-- روابط مشتركة -->
+                <li data-role-access="all"><a href="#overview" class="nav-link active"><i class="fas fa-chart-pie"></i><span>نظرة عامة</span></a></li>
+
+                <!-- روابط للمساعد -->
+                <li data-role-access="assistant"><a href="#add-content" class="nav-link"><i class="fas fa-plus-circle"></i><span>إضافة محتوى</span></a></li>
+
+                <!-- روابط للمدير وصاحب الموقع -->
+                <li data-role-access="super_admin,admin"><a href="#content" class="nav-link"><i class="fas fa-book-open"></i><span>إدارة المحتوى</span></a></li>
+                <li data-role-access="super_admin,admin"><a href="#submissions" class="nav-link"><i class="fas fa-inbox"></i><span>إدارة الطلبات</span><span id="pending-count-badge" class="badge"></span></a></li>
+                <li data-role-access="super_admin,admin"><a href="#offers" class="nav-link"><i class="fas fa-tags"></i><span>إدارة العروض</span></a></li>
+                
+                <!-- روابط لصاحب الموقع فقط -->
+                <li data-role-access="super_admin"><a href="#users" class="nav-link"><i class="fas fa-users-cog"></i><span>المستخدمون</span></a></li>
+                <li data-role-access="super_admin"><a href="#admins" class="nav-link"><i class="fas fa-user-shield"></i><span>إدارة الأعضاء</span></a></li>
+                
+                <!-- رابط مشترك في الأسفل -->
+                 <li data-role-access="all"><a href="#settings" class="nav-link"><i class="fas fa-cog"></i><span>الإعدادات</span></a></li>
             </ul>
         </nav>
 
@@ -29,25 +41,121 @@
                 <button id="logout-btn">تسجيل الخروج</button>
             </header>
 
-            <!-- قسم نظرة عامة -->
+            <!-- قسم نظرة عامة (محسّن) -->
             <div id="overview" class="page active">
                 <div class="section-header"><h3>نظرة عامة</h3></div>
                 <div id="stats-grid" class="stats-grid"></div>
             </div>
 
-            <!-- قسم إدارة المستخدمين (سيتم تطويره لاحقاً) -->
-            <div id="users" class="page">
-                 <div class="section-header"><h3>إدارة المستخدمين</h3></div>
-                 <!-- محتوى إدارة المستخدمين هنا -->
-            </div>
-
-            <!-- قسم إدارة المحتوى (سيتم تطويره لاحقاً) -->
+            <!-- قسم إدارة المحتوى (للمدراء) -->
             <div id="content" class="page">
-                <div class="section-header"><h3>إدارة المحتوى</h3></div>
-                <!-- محتوى إدارة المحتوى هنا -->
+                <div class="section-header"><h3>إدارة المحتوى الدراسي</h3></div>
+                <div class="management-grid">
+                    <div class="management-form">
+                        <h4>إضافة / تعديل محتوى</h4>
+                        <form id="content-form">
+                            <input type="hidden" id="content-id">
+                            <div class="input-with-icon"><input type="text" id="content-title" placeholder="عنوان الدرس أو التمرين" required><i class="fas fa-heading"></i></div>
+                            <div class="input-with-icon"><input type="url" id="content-drive-link" placeholder="رابط Google Drive للملف" required><i class="fab fa-google-drive"></i></div>
+                            <div class="input-with-icon">
+                                <select id="content-trimester" required>
+                                    <option value="" disabled selected>اختر الثلاثي</option>
+                                    <option value="الثلاثي الأول">الثلاثي الأول</option>
+                                    <option value="الثلاثي الثاني">الثلاثي الثاني</option>
+                                    <option value="الثلاثي الثالث">الثلاثي الثالث</option>
+                                </select><i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="input-with-icon">
+                                <select id="content-subject" required>
+                                    <option value="" disabled selected>اختر المادة</option>
+                                    <option value="لغة عربية">لغة عربية</option>
+                                    <option value="رياضيات">رياضيات</option>
+                                    <option value="إيقاظ علمي">إيقاظ علمي</option>
+                                    <option value="فرنسية">فرنسية</option>
+                                    <option value="إنجليزية">إنجليزية</option>
+                                </select><i class="fas fa-book"></i>
+                            </div>
+                             <div class="input-with-icon">
+                                <select id="content-level" required>
+                                    <option value="" disabled selected>اختر المستوى الدراسي</option>
+                                    <option value="السنة الأولى ابتدائي">السنة الأولى ابتدائي</option>
+                                    <option value="السنة الثانية ابتدائي">السنة الثانية ابتدائي</option>
+                                    <option value="السنة الثالثة ابتدائي">السنة الثالثة ابتدائي</option>
+                                    <option value="السنة الرابعة ابتدائي">السنة الرابعة ابتدائي</option>
+                                    <option value="السنة الخامسة ابتدائي">السنة الخامسة ابتدائي</option>
+                                    <option value="السنة السادسة ابتدائي">السنة السادسة ابتدائي</option>
+                                </select><i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <button type="submit">حفظ المحتوى</button>
+                            <button type="button" id="cancel-edit-content" class="hidden">إلغاء التعديل</button>
+                        </form>
+                    </div>
+                    <div class="management-list">
+                        <h4>المحتوى الحالي</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>العنوان</th><th>المادة</th><th>المستوى</th><th>إجراءات</th></tr>
+                                </thead>
+                                <tbody id="content-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم إدارة الطلبات (لصاحب الموقع والمدير) -->
+            <div id="submissions" class="page">
+                <div class="section-header"><h3>إدارة الطلبات المعلقة</h3></div>
+                <div class="management-list">
+                    <h4>التمارين والملخصات الجديدة</h4>
+                     <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>العنوان</th><th>النوع</th><th>مقدم الطلب</th><th>الإجراءات</th></tr>
+                            </thead>
+                            <tbody id="submissions-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <!-- قسم إدارة العروض -->
+            <!-- قسم إضافة محتوى (للمساعد) -->
+            <div id="add-content" class="page">
+                 <div class="section-header"><h3>إضافة / إدارة المحتوى</h3></div>
+                 <div class="management-grid">
+                     <div class="management-form">
+                         <h4>إضافة تمرين أو ملخص جديد</h4>
+                         <form id="content-submission-form">
+                            <input type="hidden" id="submission-id">
+                            <div class="input-with-icon"><input type="text" id="submission-title" placeholder="عنوان التمرين / الملخص" required><i class="fas fa-heading"></i></div>
+                            <div class="input-with-icon">
+                                <select id="submission-type" required>
+                                    <option value="" disabled selected>اختر النوع</option>
+                                    <option value="exercise">تمرين</option>
+                                    <option value="summary">ملخص</option>
+                                </select><i class="fas fa-list-alt"></i>
+                            </div>
+                            <div class="input-with-icon"><textarea id="submission-content" placeholder="محتوى التمرين أو الملخص..." rows="6" required></textarea><i class="fas fa-paragraph"></i></div>
+                             <button type="submit">إرسال للمراجعة</button>
+                             <button type="button" id="cancel-edit-submission" class="hidden">إلغاء التعديل</button>
+                         </form>
+                     </div>
+                     <div class="management-list">
+                         <h4>إضافاتي السابقة</h4>
+                          <div class="table-wrapper">
+                             <table>
+                                 <thead>
+                                     <tr><th>العنوان</th><th>الحالة</th><th>إجراءات</th></tr>
+                                 </thead>
+                                 <tbody id="my-submissions-table-body"></tbody>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- قسم إدارة العروض (للمدراء) -->
             <div id="offers" class="page">
                 <div class="section-header"><h3>إدارة العروض</h3></div>
                 <div class="management-grid">
@@ -55,14 +163,16 @@
                         <h4>إضافة / تعديل عرض</h4>
                         <form id="offer-form">
                             <input type="hidden" id="offer-id">
-                            <input type="text" id="offer-name" placeholder="اسم العرض (مثال: الباقة الشهرية)" required>
-                            <input type="number" id="offer-price" placeholder="سعر الاشتراك (د.ت)" required>
-                            <select id="offer-duration" required>
-                                <option value="" disabled selected>اختر مدة الاشتراك</option>
-                                <option value="30">شهري</option>
-                                <option value="365">سنوي</option>
-                            </select>
-                            <textarea id="offer-description" placeholder="وصف العرض والمميزات..." rows="4"></textarea>
+                            <div class="input-with-icon"><input type="text" id="offer-name" placeholder="اسم العرض (مثال: الباقة الشهرية)" required><i class="fas fa-tag"></i></div>
+                            <div class="input-with-icon"><input type="number" id="offer-price" placeholder="سعر الاشتراك (د.ت)" required><i class="fas fa-dollar-sign"></i></div>
+                            <div class="input-with-icon">
+                                <select id="offer-duration" required>
+                                    <option value="" disabled selected>اختر مدة الاشتراك</option>
+                                    <option value="30">شهري</option>
+                                    <option value="365">سنوي</option>
+                                </select><i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="input-with-icon"><textarea id="offer-description" placeholder="وصف العرض والمميزات..." rows="4"></textarea><i class="fas fa-align-left"></i></div>
                             <button type="submit">حفظ العرض</button>
                             <button type="button" id="cancel-edit-offer" class="hidden">إلغاء التعديل</button>
                         </form>
@@ -81,20 +191,23 @@
                 </div>
             </div>
 
-            <!-- قسم إدارة الأعضاء -->
+            <!-- قسم إدارة الأعضاء (لصاحب الموقع) -->
             <div id="admins" class="page">
-                <div class="section-header"><h3>إدارة الأعضاء (المساعدين)</h3></div>
+                <div class="section-header"><h3>إدارة الأعضاء</h3></div>
                 <div class="management-grid">
                     <div class="management-form">
                         <h4>إضافة عضو جديد</h4>
                         <form id="add-admin-form">
-                            <input type="text" id="admin-full-name" placeholder="الاسم الكامل للعضو" required>
-                            <input type="email" id="admin-email" placeholder="البريد الإلكتروني" required>
-                            <input type="password" id="admin-password" placeholder="كلمة سر مؤقتة" required>
-                            <select id="admin-role-select" required>
-                                <option value="assistant" selected>مساعد</option>
-                            </select>
-                            <p class="form-note">ملاحظة: سيتم إنشاء حساب للعضو بكلمة السر هذه ويمكنه تغييرها لاحقاً.</p>
+                            <div class="input-with-icon"><input type="text" id="admin-full-name" placeholder="الاسم الكامل للعضو" required><i class="fas fa-user"></i></div>
+                            <div class="input-with-icon"><input type="email" id="admin-email" placeholder="البريد الإلكتروني" required><i class="fas fa-envelope"></i></div>
+                            <div class="input-with-icon"><input type="password" id="admin-password" placeholder="كلمة سر مؤقتة" required><i class="fas fa-key"></i></div>
+                            <div class="input-with-icon">
+                                <select id="admin-role-select" required>
+                                    <option value="assistant">مساعد</option>
+                                    <option value="admin">مدير (Admin)</option>
+                                </select><i class="fas fa-user-tag"></i>
+                            </div>
+                            <p class="form-note">سيتم إنشاء حساب للعضو بالصلاحيات المحددة.</p>
                             <button type="submit">إضافة عضو</button>
                         </form>
                     </div>
@@ -111,9 +224,29 @@
                     </div>
                 </div>
             </div>
+
+            <!-- قسم المستخدمون (لصاحب الموقع) -->
+            <div id="users" class="page">
+                 <div class="section-header"><h3>إدارة المستخدمين</h3></div>
+                 <p>هذا القسم قيد التطوير لعرض وإدارة جميع مستخدمي المنصة.</p>
+            </div>
+
+            <!-- قسم الإعدادات (مشترك) -->
+            <div id="settings" class="page">
+                 <div class="section-header"><h3>إعدادات الحساب</h3></div>
+                 <div class="management-form" style="max-width: 500px; margin: 0 auto;">
+                    <h4>تغيير كلمة المرور</h4>
+                    <form id="change-password-form">
+                        <div class="input-with-icon"><input type="password" id="new-password" placeholder="كلمة المرور الجديدة" required><i class="fas fa-lock"></i></div>
+                        <div class="input-with-icon"><input type="password" id="confirm-password" placeholder="تأكيد كلمة المرور الجديدة" required><i class="fas fa-check-double"></i></div>
+                        <button type="submit">تحديث كلمة المرور</button>
+                    </form>
+                </div>
+            </div>
+
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="dashboard.js"></script>
+    <script type="module" src="dashboard.js"></script>
 </body>
 </html>
