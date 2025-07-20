@@ -9,7 +9,8 @@
 .status-badge.approved { background-color: #22c55e; }
 .status-badge.rejected { background-color: #ef4444; }
 
-/* إخفاء أزرار الحذف للمحتوى الموافق عليه */
-tr[data-status="approved"] .delete-btn {
+/* إخفاء أزرار الحذف للمحتوى الموافق عليه أو المرفوض */
+tr[data-status="approved"] .delete-btn,
+tr[data-status="rejected"] .delete-btn {
     display: none;
 }

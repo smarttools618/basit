@@ -24,6 +24,7 @@ async function checkSessionAndInitialize() {
 
     const { data: adminData } = await supabase.from('admins').select('*').eq('user_id', session.user.id).single();
 
+    // التحقق الصارم من أن المستخدم هو "مساعد"
     if (!adminData || adminData.role !== 'assistant') {
         alert('ليس لديك صلاحية الوصول لهذه الصفحة.');
         await supabase.auth.signOut();
@@ -43,6 +44,7 @@ function initializeDashboard() {
 
 function populateLevels() {
     const levelSelect = document.getElementById('content-level');
+    levelSelect.innerHTML = '<option value="" disabled selected>اختر المستوى</option>'; // إعادة تعيين
     for (let i = 1; i <= 6; i++) {
         levelSelect.innerHTML += `<option value="${i}">السنة ${i} ابتدائي</option>`;
     }
@@ -61,12 +63,18 @@ async function loadMyContent() {
 
     const tableBody = document.getElementById('my-content-table');
     const statusNames = { pending: 'قيد المراجعة', approved: 'مقبول', rejected: 'مرفوض' };
+    
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="3">لم تقم بإضافة أي محتوى بعد.</td></tr>';
+        return;
+    }
+
     tableBody.innerHTML = data.map(item => `
         <tr data-id="${item.id}" data-status="${item.status}">
             <td>${item.title}</td>
             <td><span class="status-badge ${item.status}">${statusNames[item.status]}</span></td>
             <td class="action-buttons">
-                ${item.status === 'pending' ? `<button class="delete-btn" title="حذف"><i class="fas fa-trash"></i></button>` : ''}
+                ${item.status === 'pending' ? `<button class="delete-btn" title="حذف"><i class="fas fa-trash"></i></button>` : 'لا يوجد إجراء'}
             </td>
         </tr>
     `).join('');
@@ -94,6 +102,7 @@ async function handleAddContent(e) {
     } else {
         alert("تم إرسال المحتوى للمراجعة بنجاح!");
         form.reset();
+        populateLevels(); // لإعادة تعيين القائمة المنسدلة للمستوى
         loadMyContent();
     }
 }
@@ -110,7 +119,11 @@ function setupEventListeners() {
         const button = e.target.closest('.delete-btn');
         if (button) {
             const row = button.closest('tr');
-            if (row.dataset.status !== 'pending') return;
+            // تأكيد إضافي في الجافاسكريبت
+            if (row.dataset.status !== 'pending') {
+                alert("لا يمكنك حذف محتوى تم مراجعته.");
+                return;
+            }
             if (confirm("هل أنت متأكد من حذف هذا المحتوى؟")) {
                 showLoader(true);
                 await supabase.from('content').delete().eq('id', row.dataset.id);
