@@ -22,14 +22,10 @@
                     <h2 class="form-title">انضم إلى عالم بسيط</h2>
                     <p class="form-subtitle">أنشئ حسابك وابدأ رحلة التعلم الممتعة.</p>
                     <form id="signup-form">
-                        <div class="input-with-icon"><i class="fa-solid fa-user"></i><input type="text"
-                                placeholder="الاسم" required></div>
-                        <div class="input-with-icon"><i class="fa-solid fa-user-tag"></i><input type="text"
-                                placeholder="اللقب" required></div>
-                        <div class="input-with-icon"><i class="fa-solid fa-envelope"></i><input type="email"
-                                placeholder="البريد الإلكتروني" required></div>
-                        <div class="input-with-icon"><i class="fa-solid fa-lock"></i><input type="password"
-                                placeholder="كلمة السر" required><i class="fa-solid fa-eye toggle-password"></i></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-user"></i><input type="text" placeholder="الاسم" required></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-user-tag"></i><input type="text" placeholder="اللقب" required></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="البريد الإلكتروني" required></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-lock"></i><input type="password" placeholder="كلمة السر" required><i class="fa-solid fa-eye toggle-password"></i></div>
                         <div class="input-with-icon"><i class="fa-solid fa-graduation-cap"></i><select required>
                                 <option value="" disabled selected>اختر المستوى الدراسي</option>
                                 <option value="1">السنة الأولى ابتدائي</option>
@@ -39,52 +35,59 @@
                                 <option value="5">السنة الخامسة ابتدائي</option>
                                 <option value="6">السنة السادسة ابتدائي</option>
                             </select></div>
-
                         <div class="terms-container">
                             <input type="checkbox" id="agree-terms-checkbox">
-                            <label for="agree-terms-checkbox">أوافق على <a href="#" id="terms-link">شروط
-                                    الاستخدام</a></label>
+                            <label for="agree-terms-checkbox">أوافق على <a href="#terms-modal" id="terms-link">شروط الاستخدام</a></label>
                         </div>
-
                         <button type="submit" id="signup-button" disabled>إنشاء حساب</button>
                     </form>
-                    <p class="switch-form">لديك حساب بالفعل؟ <a href="#" id="goto-login">تسجيل الدخول</a></p>
+                    <p class="switch-form">لديك حساب بالفعل؟ <a href="#login" id="goto-login">تسجيل الدخول</a></p>
                 </div>
             </div>
 
-            <!-- باقي الصفحات (تسجيل الدخول، إلخ) تبقى كما هي -->
-              <!-- صفحة تسجيل الدخول -->
+            <!-- 2. صفحة تسجيل الدخول -->
             <div id="login-page" class="page">
                 <div class="form-container">
                     <h2 class="form-title">أهلاً بعودتك!</h2>
                     <p class="form-subtitle">سجل دخولك لتكمل رحلتك التعليمية.</p>
                     <form id="login-form">
-                        <div class="input-with-icon">
-                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required>
-                        </div>
-                         <!-- تحديث حقل كلمة السر -->
-                         <div class="input-with-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر" required>
-                            <i class="fa-solid fa-eye toggle-password"></i>
-                        </div>
-            <div id="login-page" class="page">
-                 <div class="form-container">
-                    <h2 class="form-title">أهلاً بعودتك!</h2>
-                    <p class="form-subtitle">سجل دخولك لتكمل رحلتك التعليمية.</p>
-                    <form id="login-form">
-                        <div class="input-with-icon"> <i class="fa-solid fa-envelope"></i> <input type="email" placeholder="البريد الإلكتروني" required> </div>
-                        <div class="input-with-icon"> <i class="fa-solid fa-lock"></i> <input type="password" placeholder="كلمة السر" required> <i class="fa-solid fa-eye toggle-password"></i> </div>
+                        <div class="input-with-icon"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="البريد الإلكتروني" required></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-lock"></i><input type="password" placeholder="كلمة السر" required><i class="fa-solid fa-eye toggle-password"></i></div>
                         <button type="submit">تسجيل الدخول</button>
                     </form>
                     <div class="form-links">
-                        <a href="#" id="goto-forgot-password">هل نسيت كلمة السر؟</a>
-                        <a href="#" id="goto-signup">إنشاء حساب جديد</a>
+                        <a href="#forgot-password" id="goto-forgot-password">هل نسيت كلمة السر؟</a>
+                        <a href="#signup" id="goto-signup">إنشاء حساب جديد</a>
                     </div>
                 </div>
             </div>
-            <!-- ... -->
+
+            <!-- 3. صفحة نسيت كلمة السر -->
+            <div id="forgot-password-page" class="page">
+                <div class="form-container">
+                    <h2 class="form-title">إعادة تعيين كلمة السر</h2>
+                    <p class="form-subtitle">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة التعيين.</p>
+                    <form id="forgot-password-form">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i><input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                        <button type="submit">إرسال الرابط</button>
+                    </form>
+                    <p class="switch-form"><a href="#login" id="back-to-login-1">العودة لتسجيل الدخول</a></p>
+                </div>
+            </div>
+
+            <!-- 4. صفحة إعادة تعيين كلمة السر الجديدة -->
+            <div id="reset-password-page" class="page">
+                <div class="form-container">
+                    <h2 class="form-title">اختر كلمة سر جديدة</h2>
+                    <form id="reset-password-form">
+                        <div class="input-with-icon"><i class="fa-solid fa-lock"></i><input type="password" placeholder="كلمة السر الجديدة" required><i class="fa-solid fa-eye toggle-password"></i></div>
+                        <div class="input-with-icon"><i class="fa-solid fa-check-double"></i><input type="password" placeholder="تأكيد كلمة السر الجديدة" required><i class="fa-solid fa-eye toggle-password"></i></div>
+                        <button type="submit">تغيير كلمة السر</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="branding-panel">
@@ -96,7 +99,7 @@
         </div>
     </div>
 
-    <!-- النافذة المنبثقة لشروط الاستخدام (بالنص المبسط والجديد) -->
+    <!-- النافذة المنبثقة لشروط الاستخدام -->
     <div id="terms-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-modal-btn" class="close-modal-btn" title="إغلاق">×</button>
@@ -139,14 +142,13 @@
                 
                 <h4>6. تحديثات مستقبلية</h4>
                 <ul>
-                    <li>قد نقوم بتحديث هذه الشروط في المستقبل مع تطور المنصة. سنقوم بإعلامك بأي تغييرات جوههرية.</li>
+                    <li>قد نقوم بتحديث هذه الشروط في المستقبل مع تطور المنصة. سنقوم بإعلامك بأي تغييرات جوهرية.</li>
                 </ul>
     
                 <p><strong>شكراً لكونك جزءاً من عائلة بسيط ونتمنى لابنك كل التوفيق والنجاح!</strong></p>
             </div>
         </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
