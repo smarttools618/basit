@@ -32,6 +32,7 @@
                              <i class="fa-solid fa-envelope"></i>
                             <input type="email" placeholder="البريد الإلكتروني" required>
                         </div>
+                        <!-- تحديث حقل كلمة السر -->
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" placeholder="كلمة السر" required>
@@ -49,14 +50,7 @@
                                 <option value="6">السنة السادسة ابتدائي</option>
                             </select>
                         </div>
-                        <!-- ** إضافة جديدة: شروط الاستخدام ** -->
-                        <div class="terms-container">
-                            <input type="checkbox" id="terms-checkbox">
-                            <label for="terms-checkbox">
-                                أوافق على <a href="#" id="open-tos-popup">الشروط والأحكام</a>
-                            </label>
-                        </div>
-                        <button type="submit" id="signup-button" disabled>إنشاء حساب</button>
+                        <button type="submit">إنشاء حساب</button>
                     </form>
                     <p class="switch-form">لديك حساب بالفعل؟ <a href="#" id="goto-login">تسجيل الدخول</a></p>
                 </div>
@@ -72,6 +66,7 @@
                              <i class="fa-solid fa-envelope"></i>
                             <input type="email" placeholder="البريد الإلكتروني" required>
                         </div>
+                         <!-- تحديث حقل كلمة السر -->
                          <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" placeholder="كلمة السر" required>
@@ -86,8 +81,28 @@
                 </div>
             </div>
             
-            <!-- الصفحات الأخرى (تبقى كما هي) -->
-             <div id="forgot-password-page" class="page">
+            <!-- صفحة إعادة تعيين كلمة السر -->
+            <div id="reset-password-page" class="page">
+                 <div class="form-container">
+                    <h2 class="form-title">اختر كلمة سر جديدة</h2>
+                    <form id="reset-password-form">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="كلمة السر الجديدة" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                         <div class="input-with-icon">
+                            <i class="fa-solid fa-check-double"></i>
+                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                        <button type="submit">تغيير كلمة السر</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- الصفحات الأخرى تبقى كما هي -->
+            <div id="forgot-password-page" class="page">
                  <div class="form-container">
                     <h2 class="form-title">إعادة تعيين كلمة السر</h2>
                     <p class="form-subtitle">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة التعيين.</p>
@@ -112,24 +127,8 @@
         </div>
     </div>
     
-    <!-- ** إضافة جديدة: نافذة الشروط المنبثقة ** -->
-    <div id="tos-popup" class="popup-overlay">
-        <div class="popup-content">
-            <button class="popup-close">×</button>
-            <h3>الشروط والأحكام</h3>
-            <div class="popup-body">
-                <p>مرحباً بك في منصة "بسيط". باستخدامك للمنصة، فإنك توافق على الالتزام بالشروط التالية:</p>
-                <ol>
-                    <li><strong>الاستخدام المسموح:</strong> الحساب شخصي ولا يجوز مشاركته مع الآخرين.</li>
-                    <li><strong>المحتوى:</strong> جميع المواد التعليمية هي ملك للمنصة ولا يجوز نسخها أو توزيعها دون إذن.</li>
-                    <li><strong>السلوك:</strong> يجب على المستخدمين التفاعل باحترام وعدم نشر أي محتوى مسيء.</li>
-                    <li><strong>إنهاء الحساب:</strong> نحتفظ بالحق في تعليق أو حذف أي حساب يخالف هذه الشروط.</li>
-                    <li><strong>تغيير الشروط:</strong> قد نقوم بتحديث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بذلك.</li>
-                </ol>
-                <p>شكرًا لتفهمك والتزامك.</p>
-            </div>
-        </div>
-    </div>
+    <div id="offer-page" class="page"></div>
+    <div id="success-popup" class="popup-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>

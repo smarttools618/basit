@@ -1,13 +1,9 @@
-/* =======================================================
-   الكود الكامل والنهائي لملف dashboard_style.css
-   ======================================================= */
-
-/* ======== 1. إعدادات عامة ومتغيرات الألوان ======== */
+/* ======== ملف أنماط لوحة التحكم (تصميم احترافي كامل) ======== */
 :root {
     --primary-color: #0059ff;
     --primary-hover: #0048cc;
-    --sidebar-bg: #111827; /* خلفية الشريط الجانبي (أسود داكن) */
-    --main-bg: #f3f4f6;     /* خلفية المحتوى الرئيسي (رمادي فاتح) */
+    --sidebar-bg: #111827;
+    --main-bg: #f3f4f6;
     --card-bg: #ffffff;
     --text-color: #1f2937;
     --text-light: #6b7280;
@@ -16,216 +12,62 @@
     --border-color: #e5e7eb;
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
     --danger-color: #ef4444;
-    --danger-hover: #dc2626;
-    --approve-color: #22c55e;
-    --approve-hover: #16a34a;
-    --pending-color: #f59e0b;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+body { margin: 0; font-family: 'Tajawal', sans-serif; direction: rtl; background-color: var(--main-bg); }
+.dashboard-layout { display: flex; }
 
-body {
-    margin: 0;
-    font-family: 'Tajawal', sans-serif;
-    direction: rtl;
-    background-color: var(--main-bg);
-    color: var(--text-color);
-}
+/* ======== الشريط الجانبي ======== */
+.sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--text-inverse); min-height: 100vh; position: fixed; top: 0; right: 0; }
+.sidebar-header { padding: 22px; text-align: center; font-size: 1.8rem; font-weight: 700; border-bottom: 1px solid #374151; color: var(--text-inverse-hover); }
+.sidebar-menu { list-style: none; padding: 0; margin: 20px 0; }
+.sidebar-menu a { display: flex; align-items: center; gap: 15px; padding: 16px 25px; color: var(--text-inverse); text-decoration: none; transition: all 0.2s; font-size: 1rem; border-right: 4px solid transparent; }
+.sidebar-menu a:hover { background-color: #1f2937; color: var(--text-inverse-hover); }
+.sidebar-menu a.active { background-color: var(--primary-color); color: var(--text-inverse-hover); font-weight: 500; }
+.sidebar-menu a i { width: 20px; text-align: center; font-size: 1.1rem; }
 
-/* ======== 2. تخطيط لوحة التحكم الرئيسي ======== */
-.dashboard-layout {
-    display: flex;
-}
+/* ======== المحتوى الرئيسي ======== */
+.main-content { flex: 1; background-color: var(--main-bg); margin-right: 260px; }
+.main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); }
+#logout-btn { background: transparent; color: var(--danger-color); border: 1px solid var(--danger-color); /* ... */ }
+#logout-btn:hover { background: var(--danger-color); color: white; }
 
-/* ======== 3. الشريط الجانبي (Sidebar) ======== */
-.sidebar {
-    width: 260px;
-    background-color: var(--sidebar-bg);
-    color: var(--text-inverse);
-    min-height: 100vh;
-    position: fixed;
-    top: 0;
-    right: 0;
-    transition: width 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-}
-
-.sidebar-header {
-    padding: 22px;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    border-bottom: 1px solid #374151;
-    color: var(--text-inverse-hover);
-}
-
-.sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-    flex-grow: 1; /* يجعل القائمة تأخذ المساحة المتاحة وتدفع الفوتر للأسفل */
-}
-
-.sidebar-menu a {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 16px 25px;
-    color: var(--text-inverse);
-    text-decoration: none;
-    transition: all 0.2s;
-    font-size: 1rem;
-    border-right: 4px solid transparent;
-}
-
-.sidebar-menu a:hover {
-    background-color: #1f2937;
-    color: var(--text-inverse-hover);
-}
-
-.sidebar-menu a.active {
-    background-color: var(--primary-color);
-    color: var(--text-inverse-hover);
-    font-weight: 500;
-}
-
-.sidebar-menu a i {
-    width: 20px;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid #374151;
-}
-
-.sidebar-footer p {
-    margin: 0 0 5px 0;
-    color: var(--text-inverse);
-    font-size: 0.9rem;
-}
-
-.sidebar-footer .role-badge {
-    display: inline-block;
-    padding: 3px 12px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    margin-bottom: 15px;
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.sidebar-footer #logout-btn {
-    width: 100%;
-    background: var(--danger-color);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 1rem;
-}
-
-.sidebar-footer #logout-btn:hover {
-    background: var(--danger-hover);
-}
-
-/* ======== 4. المحتوى الرئيسي (Main Content) ======== */
-.main-content {
-    flex: 1;
-    background-color: var(--main-bg);
-    margin-right: 260px;
-    transition: margin-right 0.3s ease-in-out;
-    padding: 30px;
-}
-
-.page { display: none; }
+.page { display: none; padding: 30px; }
 .page.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .section-header h3 { margin: 0 0 25px 0; font-size: 1.8rem; color: var(--text-color); }
 
-/* ======== 5. شاشة التحميل (Loader) ======== */
-.loader-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(243, 244, 246, 0.7); display: flex;
-    justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(2px);
-}
-.loader-spinner {
-    border: 5px solid #e5e7eb; border-top: 5px solid var(--primary-color);
-    border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;
-}
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-/* ======== 6. المكونات (Components) ======== */
-/* بطاقات الإحصائيات */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-.stat-card { background-color: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 20px; }
-.stat-card .icon { font-size: 2.2rem; padding: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.stat-card .info h4 { margin: 0 0 8px 0; color: var(--text-light); font-weight: 500; font-size: 1rem; }
-.stat-card .info p { margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-color); }
-.stat-card.users .icon { color: #3b82f6; background-color: #dbeafe; }
-.stat-card.paid .icon { color: var(--approve-color); background-color: #dcfce7; }
-.stat-card.pending .icon { color: var(--pending-color); background-color: #fef3c7; }
-
-/* أقسام الإدارة */
+/* ======== أقسام الإدارة ======== */
 .management-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
-.management-grid-single-col { max-width: 500px; }
 .management-form { background-color: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md); }
 .management-form h4 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
 .management-form form { display: flex; flex-direction: column; gap: 15px; }
 .management-form input, .management-form select, .management-form textarea, .management-form button { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Tajawal', sans-serif; font-size: 1rem; box-sizing: border-box; }
-.management-form button[type="submit"] { background-color: var(--primary-color); color: white; cursor: pointer; border: none; transition: background-color 0.3s; font-weight: 700; }
+.management-form button[type="submit"] { background-color: var(--primary-color); color: white; cursor: pointer; border: none; transition: background-color 0.3s; }
 .management-form button[type="submit"]:hover { background-color: var(--primary-hover); }
 .management-form .form-note { font-size: 0.8rem; color: var(--text-light); }
-.management-form button.hidden { display: none; }
+#cancel-edit-offer.hidden { display: none; }
+.management-list { background-color: var(--card-bg); padding: 0; border-radius: 12px; box-shadow: var(--shadow-md); overflow: hidden; }
+.management-list h4 { padding: 20px 25px; margin: 0; border-bottom: 1px solid var(--border-color); }
 
-/* الجداول */
-.table-wrapper { overflow-x: auto; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow-md); }
+/* ======== تصميم الجداول ======== */
+.table-wrapper { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 15px 25px; text-align: right; vertical-align: middle; border-bottom: 1px solid var(--border-color); }
-th { background-color: #f9fafb; font-weight: 600; color: var(--text-light); font-size: 0.85rem; text-transform: uppercase; }
-tbody tr:last-child td { border-bottom: none; }
-.action-buttons button, .action-buttons a { background: none; border: none; cursor: pointer; padding: 5px 8px; font-size: 1.1rem; transition: transform 0.2s; display: inline-block; vertical-align: middle; }
-.action-buttons button:hover, .action-buttons a:hover { transform: scale(1.2); }
-.action-buttons .approve-btn { color: var(--approve-color); }
-.action-buttons .reject-btn { color: var(--danger-color); }
+th, td { padding: 15px 25px; text-align: right; vertical-align: middle; }
+th { background-color: #f9fafb; font-weight: 600; color: var(--text-light); font-size: 0.85rem; }
+tbody tr { border-bottom: 1px solid var(--border-color); }
+tbody tr:last-child { border-bottom: none; }
+.action-buttons button { background: none; border: none; cursor: pointer; padding: 5px; font-size: 0.9rem; }
 .action-buttons .edit-btn { color: var(--primary-color); }
 .action-buttons .delete-btn { color: var(--danger-color); }
 
-/* التبويبات */
-.tabs { display: flex; gap: 5px; border-bottom: 1px solid var(--border-color); margin-bottom: 25px; }
-.tab-link { padding: 10px 20px; cursor: pointer; background: transparent; border: none; border-bottom: 3px solid transparent; font-size: 1rem; color: var(--text-light); position: relative; top: 1px; font-family: 'Tajawal'; }
-.tab-link.active { border-bottom-color: var(--primary-color); font-weight: 700; color: var(--text-color); }
-.tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.3s; }
-.tab-content h4 { margin-bottom: 15px; font-size: 1.1rem; color: var(--text-light); }
-
-/* البادجات */
-.badge { background-color: var(--danger-color); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; margin-right: 5px; vertical-align: middle; font-weight: 700; }
-.management-list .role-badge, td .role-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; background-color: #e5e7eb; color: #4b5563; }
-.status-badge-approve { color: var(--approve-color); font-weight: bold; }
-.status-badge-danger { color: var(--danger-color); font-weight: bold; }
-
-
-/* ======== 7. التصميم المتجاوب (Responsive) ======== */
-@media (max-width: 1200px) { .management-grid { grid-template-columns: 1fr; } }
+/* ======== تصميم متجاوب ======== */
+@media (max-width: 1200px) {
+    .management-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
     .sidebar { width: 70px; }
-    .sidebar-header h3, .sidebar-menu span, .sidebar-footer p { display: none; }
+    .sidebar-header h3, .sidebar-menu span { display: none; }
+    .main-content { margin-right: 70px; }
     .sidebar-menu a { justify-content: center; }
-    .main-content { margin-right: 70px; padding: 20px; }
-    .stats-grid { grid-template-columns: 1fr; }
 }

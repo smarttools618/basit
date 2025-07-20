@@ -5,8 +5,12 @@
     --background-color: #f8f9fa;
     --form-background: #FFFFFF;
     --input-background: #f1f5f9;
-    --text-color: #111827;
-    --text-light: #4b5563;
+    
+    /* --- التغييرات هنا --- */
+    --text-color: #111827; /* لون نص أساسي أغمق (أسود ناعم) لتباين أعلى */
+    --text-light: #4b5563; /* لون نص فرعي أغمق بشكل ملحوظ لسهولة القراءة */
+    /* -------------------- */
+    
     --border-color: #cbd5e1;
     --font-family: 'Tajawal', sans-serif;
     --shadow-light: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -77,6 +81,24 @@ body {
     margin-bottom: 50px;
 }
 
+/* حركة عائمة للصورة */
+@keyframes float {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
+}
+.illustration {
+    max-width: 400px;
+    width: 100%;
+    animation: float 6s ease-in-out infinite;
+}
+
 /* ======== إخفاء وإظهار الصفحات ======== */
 .page { 
     display: none; 
@@ -93,14 +115,41 @@ body {
 }
 
 /* ======== تصميم النماذج المحسن ======== */
-.form-container { width: 100%; }
-.form-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; color: var(--text-color); }
-.form-subtitle { font-size: 1rem; color: var(--text-light); margin-bottom: 40px; }
-form { display: flex; flex-direction: column; }
+.form-container {
+    width: 100%;
+}
 
-.input-with-icon { position: relative; margin-bottom: 20px; }
-.input-with-icon i { position: absolute; top: 50%; right: 18px; transform: translateY(-50%); color: var(--text-light); font-size: 1rem; transition: color 0.3s; }
-.input-with-icon .toggle-password { left: 15px; right: auto; cursor: pointer; }
+.form-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.form-subtitle {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-with-icon {
+    position: relative;
+    margin-bottom: 20px;
+}
+.input-with-icon i {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
 
 input, select {
     width: 100%;
@@ -113,10 +162,22 @@ input, select {
     transition: all 0.3s;
     color: var(--text-color);
 }
-select { padding-left: 16px; }
-input::placeholder { color: var(--text-light); }
-input:focus, select:focus { outline: none; border-color: var(--primary-color); background-color: var(--form-background); box-shadow: 0 0 0 3px rgba(0, 89, 255, 0.2); }
-input:focus + i, select:focus + i { color: var(--primary-color); }
+select {
+    padding-left: 16px;
+}
+input::placeholder {
+    color: var(--text-light);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--form-background);
+    box-shadow: 0 0 0 3px rgba(0, 89, 255, 0.2);
+}
+input:focus + i, select:focus + i {
+    color: var(--primary-color);
+}
 
 button[type="submit"] {
     background-color: var(--primary-color);
@@ -132,91 +193,55 @@ button[type="submit"] {
     box-shadow: var(--shadow-light);
     margin-top: 15px;
 }
-button[type="submit"]:hover { background-color: var(--primary-hover); transform: translateY(-3px); box-shadow: var(--shadow-medium); }
-button[type="submit"]:disabled { background-color: #a0a0a0; cursor: not-allowed; transform: none; box-shadow: none; }
 
-.switch-form, .form-links { margin-top: 30px; font-size: 0.95rem; text-align: center; color: var(--text-light); }
-.form-links { display: flex; justify-content: space-between; }
-a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
-a:hover { text-decoration: underline; }
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
 
-/* ** إضافة جديدة: تنسيق حاوية الشروط ** */
-.terms-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-}
-#terms-checkbox {
-    width: auto;
-    accent-color: var(--primary-color);
-}
-.terms-container label {
+/* ======== روابط التنقل ======== */
+.switch-form, .form-links {
+    margin-top: 30px;
+    font-size: 0.95rem;
+    text-align: center;
     color: var(--text-light);
 }
-
-/* ** إضافة جديدة: تنسيق النافذة المنبثقة للشروط ** */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
+.form-links {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    justify-content: space-between;
 }
-.popup-overlay.active {
-    opacity: 1;
-    visibility: visible;
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
 }
-.popup-content {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 12px;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-.popup-overlay.active .popup-content {
-    transform: scale(1);
-}
-.popup-close {
-    position: absolute;
-    top: 10px;
-    left: 15px;
-    background: transparent;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--text-light);
-}
-.popup-content h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: var(--text-color);
-}
-.popup-body {
-    line-height: 1.8;
-}
-.popup-body ol {
-    padding-right: 20px;
+a:hover {
+    text-decoration: underline;
 }
 
 /* ======== التصميم المتجاوب (Responsive) للموبايل ======== */
 @media (max-width: 992px) {
-    .auth-wrapper { flex-direction: column; }
-    .branding-panel { flex: none; height: auto; padding: 60px 20px; }
-    .form-panel { padding: 40px 20px; }
+    .auth-wrapper {
+        flex-direction: column;
+    }
+    .branding-panel {
+        flex: none;
+        height: auto;
+        padding: 60px 20px;
+    }
+    .illustration {
+        max-width: 280px;
+        margin-top: 20px;
+        animation-duration: 8s;
+    }
+    .form-panel {
+        padding: 40px 20px;
+    }
+}
+/* --- إضافة لدعم أيقونة إظهار/إخفاء كلمة السر --- */
+.input-with-icon .toggle-password {
+    left: 15px; /* وضعها على اليسار */
+    right: auto;
+    cursor: pointer;
 }
