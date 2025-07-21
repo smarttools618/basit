@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - نخبة التعلم</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+    <div class="auth-page-wrapper">
+        <!-- Branding Side -->
+        <div class="branding-side">
+            <a href="index.html" class="logo">نخبة<span>التعلم</span></a>
+            <div class="branding-content">
+                <h2>أهلاً بعودتك!</h2>
+                <p>"نكون اليوم نخبة الغد"</p>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="form-side">
+            <div class="auth-container">
+                <h1>تسجيل الدخول</h1>
+                <form id="login-form">
+                    <div class="input-group floating-label">
+                        <input type="email" id="email" placeholder=" " required>
+                        <label for="email">البريد الإلكتروني</label>
+                    </div>
+                    <div class="input-group floating-label">
+                        <input type="password" id="password" placeholder=" " required>
+                        <label for="password">كلمة السر</label>
+                    </div>
+                    <button type="submit" id="submit-button">تسجيل الدخول</button>
+                </form>
+                <div id="message-container"></div>
+                <a href="signup.html" class="form-link">ليس لديك حساب؟ إنشاء حساب جديد</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main.js"></script>
+</body>
+</html>

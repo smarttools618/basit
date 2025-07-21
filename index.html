@@ -1,134 +1,125 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بسيط - وداعاً للتعقيد</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>نخبة التعلم - نكون اليوم نخبة الغد</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
-<body>
 
-    <div class="auth-wrapper">
-        <div class="form-panel">
-            <!-- صفحة إنشاء الحساب -->
-            <div id="signup-page" class="page active">
-                <div class="form-container">
-                    <h2 class="form-title">انضم إلى عالم بسيط</h2>
-                    <p class="form-subtitle">أنشئ حسابك وابدأ رحلة التعلم الممتعة.</p>
-                    <form id="signup-form">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-user"></i>
-                            <input type="text" placeholder="الاسم" required autocomplete="given-name">
-                        </div>
-                        <div class="input-with-icon">
-                             <i class="fa-solid fa-user-tag"></i>
-                            <input type="text" placeholder="اللقب" required autocomplete="family-name">
-                        </div>
-                        <div class="input-with-icon">
-                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="email">
-                        </div>
-                        <!-- تحديث حقل كلمة السر -->
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر" required autocomplete="new-password">
-                            <i class="fa-solid fa-eye toggle-password"></i>
-                        </div>
-                        <div class="input-with-icon">
-                             <i class="fa-solid fa-graduation-cap"></i>
-                            <select required>
-                                <option value="" disabled selected>اختر المستوى الدراسي</option>
-                                <option value="1">السنة الأولى ابتدائي</option>
-                                <option value="2">السنة الثانية ابتدائي</option>
-                                <option value="3">السنة الثالثة ابتدائي</option>
-                                <option value="4">السنة الرابعة ابتدائي</option>
-                                <option value="5">السنة الخامسة ابتدائي</option>
-                                <option value="6">السنة السادسة ابتدائي</option>
-                            </select>
-                        </div>
-                        <button type="submit">إنشاء حساب</button>
-                    </form>
-                    <p class="switch-form">لديك حساب بالفعل؟ <a href="#" id="goto-login">تسجيل الدخول</a></p>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">نخبة<span>التعلم</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#features">لماذا نحن؟</a></li>
+                    <li><a href="#pricing">الباقات</a></li>
+                    <li><a href="login.html" class="btn btn-secondary">تسجيل الدخول</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-bg-shape shape1"></div>
+            <div class="hero-bg-shape shape2"></div>
+            <div class="container hero-content">
+                <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">مستقبل طفلك يبدأ من هنا</h1>
+                <p class="hero-subtitle" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200">منصة تعليمية
+                    ذكية مصممة لإلهام العقول الشابة وبناء جيل من المبدعين والمتفوقين.</p>
+                <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                    <a href="signup.html" class="btn btn-primary btn-lg">ابدأ رحلة التفوق</a>
                 </div>
             </div>
+        </section>
 
-            <!-- صفحة تسجيل الدخول -->
-            <div id="login-page" class="page">
-                <div class="form-container">
-                    <h2 class="form-title">أهلاً بعودتك!</h2>
-                    <p class="form-subtitle">سجل دخولك لتكمل رحلتك التعليمية.</p>
-                    <form id="login-form">
-                        <div class="input-with-icon">
-                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="username">
+        <!-- Features Section -->
+        <section id="features" class="container section">
+            <h2 class="section-title" data-aos="fade-up">لماذا نحن الخيار الأمثل؟</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon"><i class="fas fa-book-reader"></i></div>
+                    <h3>مكتبة معرفية متكاملة</h3>
+                    <p>وصول فوري لمئات الدروس والملخصات المركزة التي تغطي كافة المواد الدراسية بأسلوب شيق ومبسط.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon"><i class="fas fa-check-double"></i></div>
+                    <h3>تمارين مع الإصلاح الفوري</h3>
+                    <p>لا مزيد من الحيرة. كل تمرين يأتي مع حله المفصل خطوة بخطوة لضمان فهم كامل للمفاهيم.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3>تصميم يلهم الإبداع</h3>
+                    <p>واجهات عصرية وتفاعلية مصممة بعناية لتحفيز فضول الأطفال وتحويل التعلم إلى مغامرة ممتعة.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">باقات مصممة للنجاح</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card" data-aos="fade-right" data-aos-delay="200">
+                        <div class="pricing-header">
+                            <h3>الباقة المجانية</h3>
+                            <p class="price"><span>0</span> د.ت</p>
+                            <p class="price-desc">للتجربة والاستكشاف</p>
                         </div>
-                         <!-- تحديث حقل كلمة السر -->
-                         <div class="input-with-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر" required autocomplete="current-password">
-                            <i class="fa-solid fa-eye toggle-password"></i>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check-circle"></i> 10 دروس</li>
+                            <li><i class="fas fa-check-circle"></i> 10 تمارين مع الحل</li>
+                            <li><i class="fas fa-check-circle"></i> 10 ملخصات</li>
+                            <li><i class="fas fa-times-circle"></i> وصول محدود للمحتوى</li>
+                        </ul>
+                        <a href="signup.html" class="btn btn-secondary-outline">ابدأ التجربة</a>
+                    </div>
+                    <div class="pricing-card recommended" data-aos="fade-left" data-aos-delay="200">
+                        <div class="recommended-badge">الأكثر اختياراً</div>
+                        <div class="pricing-header">
+                            <h3>باقة النخبة</h3>
+                            <p class="price"><span>10</span> د.ت</p>
+                            <p class="price-desc">لكل شهر / وصول كامل</p>
                         </div>
-                        <button type="submit">تسجيل الدخول</button>
-                    </form>
-                    <div class="form-links">
-                        <a href="#" id="goto-forgot-password">هل نسيت كلمة السر؟</a>
-                        <a href="#" id="goto-signup">إنشاء حساب جديد</a>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check-circle"></i> 100+ درس</li>
+                            <li><i class="fas fa-check-circle"></i> 100+ تمرين مع الحل</li>
+                            <li><i class="fas fa-check-circle"></i> 100+ ملخص</li>
+                            <li><i class="fas fa-check-circle"></i> وصول كامل وغير محدود</li>
+                            <li><i class="fas fa-check-circle"></i> محتوى حصري ومتجدد</li>
+                        </ul>
+                        <a href="signup.html" class="btn btn-primary">الترقية إلى النخبة</a>
                     </div>
                 </div>
             </div>
-            
-            <!-- الصفحات الأخرى تبقى كما هي -->
-            <div id="reset-password-page" class="page">
-                 <div class="form-container">
-                    <h2 class="form-title">اختر كلمة سر جديدة</h2>
-                    <form id="reset-password-form">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="كلمة السر الجديدة" required autocomplete="new-password">
-                            <i class="fa-solid fa-eye toggle-password"></i>
-                        </div>
-                         <div class="input-with-icon">
-                            <i class="fa-solid fa-check-double"></i>
-                            <input type="password" placeholder="تأكيد كلمة السر الجديدة" required autocomplete="new-password">
-                            <i class="fa-solid fa-eye toggle-password"></i>
-                        </div>
-                        <button type="submit">تغيير كلمة السر</button>
-                    </form>
-                </div>
-            </div>
-            <div id="forgot-password-page" class="page">
-                 <div class="form-container">
-                    <h2 class="form-title">إعادة تعيين كلمة السر</h2>
-                    <p class="form-subtitle">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة التعيين.</p>
-                    <form id="forgot-password-form">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-envelope"></i>
-                            <input type="email" placeholder="البريد الإلكتروني" required autocomplete="email">
-                        </div>
-                        <button type="submit">إرسال الرابط</button>
-                    </form>
-                    <p class="switch-form"><a href="#" id="back-to-login-1">العودة لتسجيل الدخول</a></p>
-                </div>
-            </div>
-        </div>
+        </section>
+    </main>
 
-        <div class="branding-panel">
-            <div class="branding-content">
-                <h1>بسيط</h1>
-                <p class="slogan">وداعاً للتعقيد، ومرحباً بالمعرفة.</p>
-                <i class="fa-solid fa-book-open fa-5x" style="color: #fff; margin: 0;"></i>
-            </div>
+    <footer class="main-footer-bottom">
+        <div class="container">
+            <p>© 2024 نخبة التعلم. كل الإبداع محفوظ.</p>
         </div>
-    </div>
-    
-    <div id="offer-page" class="page"></div>
-    <div id="success-popup" class="popup-container"></div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+    <!-- AOS Animation Library Script -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic',
+        });
+    </script>
 </body>
+
 </html>
