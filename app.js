@@ -13,29 +13,38 @@ const signupForm = document.getElementById('signup-form');
 const loginMessageContainer = document.getElementById('login-message-container');
 const signupMessageContainer = document.getElementById('signup-message-container');
 
-// Initialize Password Toggle Functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const passwordToggles = document.querySelectorAll('.password-toggle');
-    
-    passwordToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            const targetId = toggle.getAttribute('data-target');
-            const passwordInput = document.getElementById(targetId);
-            const icon = toggle.querySelector('i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-                toggle.setAttribute('aria-label', 'إخفاء كلمة المرور');
+// Password toggle functionality (instant, robust)
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('password-toggle') || e.target.closest('.password-toggle')) {
+        const btn = e.target.closest('.password-toggle');
+        const inputId = btn.getAttribute('data-target');
+        const input = document.getElementById(inputId);
+        if (input) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.querySelector('i').classList.remove('fa-eye');
+                btn.querySelector('i').classList.add('fa-eye-slash');
+                btn.setAttribute('aria-label', 'إخفاء كلمة المرور');
             } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-                toggle.setAttribute('aria-label', 'إظهار كلمة المرور');
+                input.type = 'password';
+                btn.querySelector('i').classList.remove('fa-eye-slash');
+                btn.querySelector('i').classList.add('fa-eye');
+                btn.setAttribute('aria-label', 'إظهار كلمة المرور');
             }
-        });
-    });
+            input.focus();
+        }
+    }
+});
+
+// Show auth modal instantly (no delay, no fade)
+window.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('auth-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'block';
+        modal.style.opacity = '1';
+        modal.style.transition = 'none';
+    }
 });
 
 // ==================================================

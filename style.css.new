@@ -1,0 +1,115 @@
+/* Authentication Pages Styles */
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-white) 100%);
+}
+
+.auth-wrapper {
+  padding: var(--space-lg) var(--space-md);
+}
+
+.auth-card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-logo img {
+  height: 60px;
+  width: auto;
+}
+
+.auth-form .form-group {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.auth-form .floating-label {
+  position: relative;
+}
+
+.auth-form .floating-label input {
+  height: 56px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  width: 100%;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.auth-form .floating-label label {
+  position: absolute;
+  right: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-white);
+  padding: 0 4px;
+  color: var(--color-text-muted);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.auth-form .floating-label input:focus,
+.auth-form .floating-label input:not(:placeholder-shown) {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.auth-form .floating-label input:focus + label,
+.auth-form .floating-label input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+}
+
+.auth-form .password-toggle {
+  position: absolute;
+  left: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.auth-form .password-toggle:hover {
+  color: var(--color-primary);
+}
+
+.auth-form .btn-main {
+  height: 48px;
+  font-size: 1rem;
+}
+
+.auth-form .forgot-password {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.auth-form .forgot-password:hover {
+  color: var(--color-primary);
+}
+
+.message-container .message {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  font-size: 0.9rem;
+}
+
+.message-container .message.error {
+  background-color: #ffe6e6;
+  color: var(--color-error);
+  border: 1px solid #ffcccc;
+}
+
+.message-container .message.success {
+  background-color: #e6ffe6;
+  color: var(--color-success);
+  border: 1px solid #ccffcc;
+}
