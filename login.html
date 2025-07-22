@@ -4,40 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - نخبة التعلم</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="auth-body">
-    <div class="auth-page-wrapper">
-        <!-- Branding Side -->
-        <div class="branding-side">
-            <a href="index.html" class="logo">نخبة<span>التعلم</span></a>
-            <div class="branding-content">
-                <h2>أهلاً بعودتك!</h2>
-                <p>"نكون اليوم نخبة الغد"</p>
-            </div>
-        </div>
-
-        <!-- Form Side -->
-        <div class="form-side">
-            <div class="auth-container">
-                <h1>تسجيل الدخول</h1>
-                <form id="login-form">
-                    <div class="input-group floating-label">
-                        <input type="email" id="email" placeholder=" " required>
-                        <label for="email">البريد الإلكتروني</label>
+<body class="auth-page">
+    <div class="auth-wrapper d-flex align-items-center min-vh-100">
+        <div class="container my-auto">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="auth-card">
+                        <div class="text-center mb-4">
+                            <a href="index.html" class="auth-logo d-inline-block mb-4">
+                                <img src="https://i.ibb.co/2YZDbzyV/Untitled-design.png" alt="شعار نخبة التعلم" height="60">
+                                <h2 class="brand-text mt-2">نخبة<span class="text-primary">التعلم</span></h2>
+                            </a>
+                            <h1 class="h3 mb-2">أهلاً بعودتك!</h1>
+                            <p class="text-muted">سجل دخولك لمتابعة رحلتك التعليمية</p>
+                        </div>
+                        <form id="login-form" class="auth-form" novalidate>
+                            <div class="form-group floating-label mb-4">
+                                <input type="email" id="login-email" class="form-control" required>
+                                <label for="login-email">البريد الإلكتروني</label>
+                            </div>
+                            <div class="form-group floating-label mb-4">
+                                <input type="password" id="login-password" class="form-control" required>
+                                <label for="login-password">كلمة المرور</label>
+                                <button type="button" class="password-toggle" data-target="login-password">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-group d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember">
+                                    <label class="form-check-label" for="remember">تذكرني</label>
+                                </div>
+                                <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+                            </div>
+                            <div class="message-container mb-3" id="login-message-container"></div>
+                            <button type="submit" class="btn btn-main w-100 mb-4">تسجيل الدخول</button>
+                            <p class="text-center mb-0">
+                                ليس لديك حساب؟ 
+                                <a href="signup.html" class="fw-bold text-decoration-none">إنشاء حساب جديد</a>
+                            </p>
+                        </form>
                     </div>
-                    <div class="input-group floating-label">
-                        <input type="password" id="password" placeholder=" " required>
-                        <label for="password">كلمة السر</label>
-                    </div>
-                    <button type="submit" id="submit-button">تسجيل الدخول</button>
-                </form>
-                <div id="message-container"></div>
-                <a href="signup.html" class="form-link">ليس لديك حساب؟ إنشاء حساب جديد</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="main.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

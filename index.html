@@ -4,122 +4,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نخبة التعلم - نكون اليوم نخبة الغد</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for Icons -->
+    <title>نخبة التعلم - منصة تعليمية عصرية</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation Library -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.site-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+
+            // Close mobile menu when clicking a link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 992) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navbarCollapse.contains(e.target) && !e.target.matches('.navbar-toggler, .navbar-toggler *')) {
+                    navbarCollapse.classList.remove('show');
+                }
+            });
+        });
+    </script>
+    <script src="app.js"></script>
 </head>
 
-<body>
-    <!-- Header -->
-    <header class="main-header">
-        <div class="container">
-            <a href="index.html" class="logo">نخبة<span>التعلم</span></a>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#features">لماذا نحن؟</a></li>
-                    <li><a href="#pricing">الباقات</a></li>
-                    <li><a href="login.html" class="btn btn-secondary">تسجيل الدخول</a></li>
-                </ul>
-            </nav>
-        </div>
+<body class="landing-page-body">
+
+    <!-- ======================= Header ======================= -->
+    <header class="site-header fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand logo d-flex align-items-center" href="#" aria-label="الرئيسية">
+                    <div class="logo-wrapper d-flex align-items-center gap-3">
+                        <img src="https://i.ibb.co/2YZDbzyV/Untitled-design.png" alt="شعار نخبة التعلم"
+                            class="logo-img">
+                        <span class="brand-text">نخبة<span class="text-primary">التعلم</span></span>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">المميزات</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pricing">الباقات</a>
+                        </li>
+                    </ul>
+                    <div class="nav-buttons d-flex gap-2">
+                        <a href="login.html" class="btn btn-outline-custom">تسجيل الدخول</a>
+                        <a href="signup.html" class="btn btn-main">ابدأ الآن</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section id="hero">
-            <div class="hero-bg-shape shape1"></div>
-            <div class="hero-bg-shape shape2"></div>
-            <div class="container hero-content">
-                <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">مستقبل طفلك يبدأ من هنا</h1>
-                <p class="hero-subtitle" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200">منصة تعليمية
-                    ذكية مصممة لإلهام العقول الشابة وبناء جيل من المبدعين والمتفوقين.</p>
-                <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
-                    <a href="signup.html" class="btn btn-primary btn-lg">ابدأ رحلة التفوق</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="container section">
-            <h2 class="section-title" data-aos="fade-up">لماذا نحن الخيار الأمثل؟</h2>
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon"><i class="fas fa-book-reader"></i></div>
-                    <h3>مكتبة معرفية متكاملة</h3>
-                    <p>وصول فوري لمئات الدروس والملخصات المركزة التي تغطي كافة المواد الدراسية بأسلوب شيق ومبسط.</p>
-                </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon"><i class="fas fa-check-double"></i></div>
-                    <h3>تمارين مع الإصلاح الفوري</h3>
-                    <p>لا مزيد من الحيرة. كل تمرين يأتي مع حله المفصل خطوة بخطوة لضمان فهم كامل للمفاهيم.</p>
-                </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
-                    <h3>تصميم يلهم الإبداع</h3>
-                    <p>واجهات عصرية وتفاعلية مصممة بعناية لتحفيز فضول الأطفال وتحويل التعلم إلى مغامرة ممتعة.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pricing Section -->
-        <section id="pricing" class="section">
+        <!-- ======================= Hero Section ======================= -->
+        <section class="hero">
             <div class="container">
-                <h2 class="section-title" data-aos="fade-up">باقات مصممة للنجاح</h2>
-                <div class="pricing-grid">
-                    <div class="pricing-card" data-aos="fade-right" data-aos-delay="200">
-                        <div class="pricing-header">
-                            <h3>الباقة المجانية</h3>
-                            <p class="price"><span>0</span> د.ت</p>
-                            <p class="price-desc">للتجربة والاستكشاف</p>
+                <div class="row align-items-center flex-md-row-reverse g-4">
+                    <div class="col-md-7 hero-content order-2 order-md-1">
+                        <h1 class="mb-4 display-4 fw-bold">مستقبل طفلك يبدأ من هنا</h1>
+                        <p class="mb-4 lead">منصة تعليمية ذكية لإلهام العقول الشابة وبناء جيل من المبدعين
+                            والمتفوقين.</p>
+                        <div>
+                            <a href="signup.html" class="btn btn-main btn-lg px-5 py-3 d-inline-flex align-items-center">
+                                ابدأ رحلة التفوق
+                                <i class="fas fa-arrow-left me-2"></i>
+                            </a>
                         </div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check-circle"></i> 10 دروس</li>
-                            <li><i class="fas fa-check-circle"></i> 10 تمارين مع الحل</li>
-                            <li><i class="fas fa-check-circle"></i> 10 ملخصات</li>
-                            <li><i class="fas fa-times-circle"></i> وصول محدود للمحتوى</li>
-                        </ul>
-                        <a href="signup.html" class="btn btn-secondary-outline">ابدأ التجربة</a>
                     </div>
-                    <div class="pricing-card recommended" data-aos="fade-left" data-aos-delay="200">
-                        <div class="recommended-badge">الأكثر اختياراً</div>
-                        <div class="pricing-header">
-                            <h3>باقة النخبة</h3>
-                            <p class="price"><span>10</span> د.ت</p>
-                            <p class="price-desc">لكل شهر / وصول كامل</p>
-                        </div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check-circle"></i> 100+ درس</li>
-                            <li><i class="fas fa-check-circle"></i> 100+ تمرين مع الحل</li>
-                            <li><i class="fas fa-check-circle"></i> 100+ ملخص</li>
-                            <li><i class="fas fa-check-circle"></i> وصول كامل وغير محدود</li>
-                            <li><i class="fas fa-check-circle"></i> محتوى حصري ومتجدد</li>
+                    <div class="col-md-5 hero-icon text-center mb-4 mb-md-0">
+                        <img src="https://i.ibb.co/2YZDbzyV/Untitled-design.png" alt="رسم توضيحي للتعلم"
+                            class="img-fluid floating-animation" style="max-height:400px;object-fit:contain;" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= Features Section ======================= -->
+        <section id="features" class="features section">
+            <div class="container">
+                <h2 class="section-title">لماذا تختار نخبة التعلم؟</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-book-reader"></i>
+                        <h3>مكتبة معرفية متكاملة</h3>
+                        <p>دروس وملخصات مركزة تغطي كافة المواد الدراسية بأسلوب شيق ومبتكر.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-check-double"></i>
+                        <h3>تمارين مع الحل الفوري</h3>
+                        <p>حلول مفصلة لكل تمرين لضمان فهم كامل للمفاهيم وترسيخها.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>تصميم يلهم الإبداع</h3>
+                        <p>واجهات عصرية وتفاعلية مصممة لتحفيز فضول الأطفال وحبهم للتعلم.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= Pricing Section ======================= -->
+        <section id="pricing" class="pricing section">
+            <div class="container">
+                <h2 class="section-title">اختر الباقة التي تناسبك</h2>
+                <div class="pricing-grid">
+                    <div class="plan-card">
+                        <h3>مجانية</h3>
+                        <p>للتجربة والاستكشاف</p>
+                        <div class="plan-price">0 د.ت<span>/للأبد</span></div>
+                        <ul>
+                            <li><i class="fas fa-check-circle text-success"></i> 10 دروس محدودة</li>
+                            <li><i class="fas fa-check-circle text-success"></i> 10 تمارين مع الحل</li>
+                            <li><i class="fas fa-check-circle text-success"></i> 10 ملخصات</li>
                         </ul>
-                        <a href="signup.html" class="btn btn-primary">الترقية إلى النخبة</a>
+                        <button class="btn btn-outline-custom signup-offer-btn">ابدأ التجربة</button>
+                    </div>
+                    <div class="plan-card featured">
+                        <span class="plan-badge">الأكثر اختياراً</span>
+                        <h3>النخبة</h3>
+                        <p>وصول كامل وغير محدود</p>
+                        <div class="plan-price">10 د.ت<span>/شهريًا</span></div>
+                        <ul>
+                            <li><i class="fas fa-check-circle text-primary"></i> وصول كامل للدروس</li>
+                            <li><i class="fas fa-check-circle text-primary"></i> وصول كامل للتمارين</li>
+                            <li><i class="fas fa-check-circle text-primary"></i> وصول كامل للملخصات</li>
+                            <li><i class="fas fa-check-circle text-primary"></i> محتوى حصري ومتجدد</li>
+                        </ul>
+                        <button class="btn btn-main signup-offer-btn">الترقية إلى النخبة</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer-bottom">
-        <div class="container">
-            <p>© 2024 نخبة التعلم. كل الإبداع محفوظ.</p>
+    <!-- ======================= Authentication Modal ======================= -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content-wrapper">
+            <button class="modal-close-btn" id="modal-close-btn" aria-label="إغلاق">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content-inner">
+                <!-- Login Section -->
+                <div class="auth-section" id="login-section">
+                    <div class="auth-container">
+                        <h1 class="mb-2">أهلاً بعودتك!</h1>
+                        <p class="text-muted">سجل دخولك لمتابعة رحلتك التعليمية</p>
+                        <form id="login-form" class="auth-form" novalidate>
+                            <div class="form-group floating-label mb-4">
+                                <input type="email" id="login-email" class="form-control" placeholder=" " required>
+                                <label for="login-email">البريد الإلكتروني</label>
+                                <i class="fas fa-envelope input-icon"></i>
+                            </div>
+                            <div class="form-group floating-label mb-4">
+                                <input type="password" id="login-password" class="form-control" placeholder=" " required>
+                                <label for="login-password">كلمة المرور</label>
+                                <i class="fas fa-lock input-icon"></i>
+                                <button type="button" class="password-toggle" data-target="login-password" aria-label="إظهار/إخفاء كلمة المرور">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-end mb-4">
+                                <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+                            </div>
+                            <div class="message-container mb-3" id="login-message-container"></div>
+                            <button type="submit" class="btn btn-main w-100 mb-4">تسجيل الدخول</button>
+                        </form>
+                        <p class="form-link-container mt-3">ليس لديك حساب؟ <a href="#" class="form-link"
+                                id="show-signup">إنشاء حساب جديد</a></p>
+                    </div>
+                </div>
+                <!-- Signup Section -->
+                <div class="auth-section hidden" id="signup-section">
+                    <div class="auth-container">
+                        <h1 class="mb-2">انضم إلى النخبة</h1>
+                        <p class="text-muted">أنشئ حسابك وابدأ رحلة التفوق لطفلك</p>
+                        <form id="signup-form" class="auth-form" novalidate>
+                            <div class="form-group floating-label mb-4">
+                                <input type="text" id="signup-name" class="form-control" placeholder=" " required>
+                                <label for="signup-name">الاسم الكامل</label>
+                            </div>
+                            <div class="form-group floating-label mb-4">
+                                <input type="email" id="signup-email" class="form-control" placeholder=" " required>
+                                <label for="signup-email">البريد الإلكتروني</label>
+                                <i class="fas fa-envelope input-icon"></i>
+                            </div>
+                            <div class="form-group floating-label mb-4">
+                                <input type="password" id="signup-password" class="form-control" placeholder=" " required minlength="6">
+                                <label for="signup-password">كلمة المرور (6 أحرف على الأقل)</label>
+                                <i class="fas fa-lock input-icon"></i>
+                                <button type="button" class="password-toggle" data-target="signup-password" aria-label="إظهار/إخفاء كلمة المرور">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        أوافق على <a href="#">الشروط والأحكام</a> و <a href="#">سياسة الخصوصية</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="message-container mb-3" id="signup-message-container"></div>
+                            <button type="submit" class="btn btn-main w-100 mb-4">إنشاء الحساب</button>
+                        </form>
+                        <p class="form-link-container mt-3">لديك حساب بالفعل؟ <a href="#" class="form-link"
+                                id="show-login">تسجيل الدخول</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- AOS Animation Library Script -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic',
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
