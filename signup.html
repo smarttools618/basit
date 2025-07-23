@@ -59,19 +59,28 @@
                                 <label for="signup-email">البريد الإلكتروني</label>
                                 <i class="fas fa-envelope input-icon"></i>
                             </div>
-                            <div class="form-group floating-label mb-4">
+                            <div class="form-group floating-label mb-2">
                                 <input type="password" id="signup-password" class="form-control" placeholder=" " required minlength="6">
                                 <label for="signup-password">كلمة المرور (6 أحرف على الأقل)</label>
                                 <i class="fas fa-lock input-icon"></i>
-                                <button type="button" class="password-toggle" data-target="signup-password" aria-label="إظهار/إخفاء كلمة المرور">
+                                <button type="button" class="password-toggle btn btn-link p-0 position-absolute end-0 top-50 translate-middle-y me-3" data-target="signup-password" aria-label="إظهار/إخفاء كلمة المرور">
                                     <i class="far fa-eye"></i>
                                 </button>
+                            </div>
+                            <div class="password-strength mb-3">
+                                <div class="strength-bars d-flex gap-1 mb-2">
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                </div>
+                                <small class="strength-text text-muted">قوة كلمة المرور: <span>ضعيفة</span></small>
                             </div>
                             <div class="form-group mb-4">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="terms" required>
                                     <label class="form-check-label" for="terms">
-                                        أوافق على <a href="#">الشروط والأحكام</a> و <a href="#">سياسة الخصوصية</a>
+                                        أوافق على <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">الشروط والأحكام</a> و <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">سياسة الخصوصية</a>
                                     </label>
                                 </div>
                             </div>
@@ -86,7 +95,156 @@
         </div>
     </main>
 
+    <!-- Terms and Privacy Modals -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">الشروط والأحكام</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. مقدمة</h6>
+                    <p>مرحبًا بكم في منصة نخبة التعلم. من خلال استخدامك لهذه المنصة، فإنك توافق على الالتزام بالشروط والأحكام التالية.</p>
+                    
+                    <h6>2. الحساب وكلمة المرور</h6>
+                    <p>أنت مسؤول عن الحفاظ على سرية معلومات حسابك وكلمة المرور وتقيدك بالشروط المنصوص عليها.</p>
+                    
+                    <h6>3. الاستخدام المقبول</h6>
+                    <p>يجب استخدام المنصة للأغراض التعليمية المشروعة فقط ووفقًا للقوانين واللوائح المعمول بها.</p>
+                    
+                    <h6>4. الملكية الفكرية</h6>
+                    <p>جميع المحتويات والمواد المتوفرة على المنصة محمية بحقوق الطبع والنشر والملكية الفكرية.</p>
+                    
+                    <h6>5. التعديلات</h6>
+                    <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت، وسيتم إخطارك بأي تغييرات.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">سياسة الخصوصية</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. المعلومات التي نجمعها</h6>
+                    <p>نجمع المعلومات التي تقدمها لنا عند إنشاء الحساب أو استخدام خدماتنا، بما في ذلك الاسم وعنوان البريد الإلكتروني.</p>
+                    
+                    <h6>2. كيفية استخدامنا لمعلوماتك</h6>
+                    <p>نستخدم معلوماتك لتقديم خدماتنا وتحسينها، وللاتصال بك، ولأغراض الأمان.</p>
+                    
+                    <h6>3. مشاركة المعلومات</h6>
+                    <p>لا نبيع أو نؤجر معلوماتك الشخصية لأطراف ثالثة لأغراض تسويقية.</p>
+                    
+                    <h6>4. الأمان</h6>
+                    <p>نحن نحمي معلوماتك باستخدام إجراءات أمنية تقنية وإدارية مناسبة.</p>
+                    
+                    <h6>5. حقوقك</h6>
+                    <p>لديك الحق في الوصول إلى معلوماتك الشخصية وتصحيحها أو حذفها في أي وقت.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
+    <script>
+        // Initialize when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    const passwordInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (!passwordInput || !icon) return;
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                        this.setAttribute('aria-label', 'إخفاء كلمة المرور');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                        this.setAttribute('aria-label', 'إظهار كلمة المرور');
+                    }
+                });
+            });
+            
+            // Password strength meter functionality
+            const passwordInput = document.getElementById('signup-password');
+            const strengthBars = document.querySelectorAll('.strength-bar');
+            const strengthText = document.querySelector('.strength-text span');
+            
+            if (passwordInput && strengthBars.length > 0 && strengthText) {
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    const strength = checkPasswordStrength(password);
+                    updateStrengthMeter(strength);
+                });
+            }
+
+            function checkPasswordStrength(password) {
+                if (!password) return 0;
+                
+                let strength = 0;
+                
+                // Check length
+                if (password.length >= 8) strength++;
+                
+                // Check for numbers
+                if (/\d/.test(password)) strength++;
+                
+                // Check for special characters
+                if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+                
+                // Check for both uppercase and lowercase
+                if (/(?=.*[a-z])(?=.*[A-Z])/.test(password)) strength++;
+                
+                return Math.min(strength, 4); // Max 4
+            }
+
+            function updateStrengthMeter(strength) {
+                if (!strengthBars || !strengthText) return;
+                
+                // Update bars
+                strengthBars.forEach((bar, index) => {
+                    if (index < strength) {
+                        bar.style.backgroundColor = getStrengthColor(strength);
+                        bar.style.flex = '1';
+                    } else {
+                        bar.style.backgroundColor = '#e9ecef';
+                        bar.style.flex = '0.5';
+                    }
+                });
+
+                // Update text
+                const strengthTexts = ['ضعيفة جداً', 'ضعيفة', 'جيدة', 'قوية', 'قوية جداً'];
+                const strengthColors = ['#dc3545', '#ffc107', '#28a745', '#20c997', '#198754'];
+                strengthText.textContent = strengthTexts[strength] || '';
+                strengthText.style.color = strengthColors[strength] || '#6c757d';
+            }
+
+            function getStrengthColor(strength) {
+                const colors = ['#dc3545', '#ffc107', '#28a745', '#20c997', '#198754'];
+                return colors[strength] || '#6c757d';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -59,7 +59,7 @@
                                 <input type="password" id="login-password" class="form-control" placeholder="" required autocomplete="current-password">
                                 <label for="login-password">كلمة المرور</label>
                                 <i class="fas fa-lock input-icon"></i>
-                                <button type="button" class="password-toggle" data-target="login-password" aria-label="إظهار/إخفاء كلمة المرور">
+                                <button type="button" class="password-toggle btn btn-link p-0 position-absolute end-0 top-50 translate-middle-y me-3" data-target="login-password" aria-label="إظهار/إخفاء كلمة المرور">
                                     <i class="far fa-eye"></i>
                                 </button>
                             </div>
@@ -77,7 +77,36 @@
         </div>
     </main>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
+    <script>
+        // Initialize when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    const passwordInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (!passwordInput || !icon) return;
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                        this.setAttribute('aria-label', 'إخفاء كلمة المرور');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                        this.setAttribute('aria-label', 'إظهار كلمة المرور');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
