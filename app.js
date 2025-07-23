@@ -1,218 +1,201 @@
-// ==================================================
-// 1. Configuration & Supabase Client
-// ==================================================
-const SUPABASE_URL = 'https://yhfqnfunkmhhxbwtrjns.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloZnFuZnVua21oaHhid3Ryam5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwOTAwODMsImV4cCI6MjA2ODY2NjA4M30.tLLs2S0wqnuJ2H7K5tucFJk3phktsgpMCYa92q0jopc';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ==================================================
-// 2. DOM Elements
-// ==================================================
-const loginForm = document.getElementById('login-form');
-const signupForm = document.getElementById('signup-form');
-const loginMessageContainer = document.getElementById('login-message-container');
-const signupMessageContainer = document.getElementById('signup-message-container');
-
-// Password toggle functionality (instant, robust)
-document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('password-toggle') || e.target.closest('.password-toggle')) {
-        const btn = e.target.closest('.password-toggle');
-        const inputId = btn.getAttribute('data-target');
-        const input = document.getElementById(inputId);
-        if (input) {
-            if (input.type === 'password') {
-                input.type = 'text';
-                btn.querySelector('i').classList.remove('fa-eye');
-                btn.querySelector('i').classList.add('fa-eye-slash');
-                btn.setAttribute('aria-label', 'إخفاء كلمة المرور');
-            } else {
-                input.type = 'password';
-                btn.querySelector('i').classList.remove('fa-eye-slash');
-                btn.querySelector('i').classList.add('fa-eye');
-                btn.setAttribute('aria-label', 'إظهار كلمة المرور');
-            }
-            input.focus();
-        }
-    }
-});
-
-// Show auth modal instantly (no delay, no fade)
-window.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('auth-modal');
-    if (modal) {
-        modal.classList.remove('hidden');
-        modal.style.display = 'block';
-        modal.style.opacity = '1';
-        modal.style.transition = 'none';
-    }
-});
-
-// ==================================================
-// 3. Utility Functions
-// ==================================================
-
-// Password Strength Checker
-const checkPasswordStrength = (password) => {
-    let strength = 0;
-    const strengthBars = document.querySelector('.strength-bars');
-    const strengthText = document.querySelector('.strength-text');
-
-    // Length check
-    if (password.length >= 8) strength++;
-    
-    // Contains numbers
-    if (/\d/.test(password)) strength++;
-    
-    // Contains letters
-    if (/[a-zA-Z]/.test(password)) strength++;
-    
-    // Contains special characters
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
-
-    // Update UI
-    strengthBars?.classList.remove('weak', 'medium', 'strong', 'very-strong');
-    
-    if (password.length === 0) {
-        strengthText.textContent = 'قوة كلمة المرور';
-    } else if (strength === 1) {
-        strengthBars?.classList.add('weak');
-        strengthText.textContent = 'ضعيفة';
-    } else if (strength === 2) {
-        strengthBars?.classList.add('medium');
-        strengthText.textContent = 'متوسطة';
-    } else if (strength === 3) {
-        strengthBars?.classList.add('strong');
-        strengthText.textContent = 'قوية';
-    } else {
-        strengthBars?.classList.add('very-strong');
-        strengthText.textContent = 'قوية جداً';
-    }
-};
-const showMessage = (container, message, type = 'error') => {
-  if (container) {
-    container.innerHTML = `<div class="message ${type}">${message}</div>`;
-  }
-};
-
-const setButtonLoading = (button, isLoading) => {
-  if (button) {
-    const originalText = button.dataset.originalText || button.innerHTML;
-    if (!button.dataset.originalText) {
-      button.dataset.originalText = originalText;
-    }
-    button.disabled = isLoading;
-    button.innerHTML = isLoading ? 
-      `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري...` : 
-      originalText;
-  }
-};
-
-// ==================================================
-// 4. Form Handlers
-// ==================================================
-const handleLogin = async (e) => {
-  e.preventDefault();
-  const submitButton = loginForm.querySelector('button[type="submit"]');
-  setButtonLoading(submitButton, true);
-  
-  const { error } = await supabase.auth.signInWithPassword({
-    email: document.getElementById('login-email')?.value || '',
-    password: document.getElementById('login-password')?.value || '',
-  });
-
-  if (error) {
-    showMessage(loginMessageContainer, 'البريد الإلكتروني أو كلمة المرور غير صحيحة.');
-  } else {
-    // Store auth state
-    localStorage.setItem('isAuthenticated', 'true');
-    // Redirect to home page
-    window.location.href = 'home.html';
-  }
-  
-  setButtonLoading(submitButton, false);
-};
-
-const handleSignup = async (e) => {
-  e.preventDefault();
-  const submitButton = signupForm.querySelector('button[type="submit"]');
-  setButtonLoading(submitButton, true);
-
-  const email = document.getElementById('signup-email')?.value || '';
-  const password = document.getElementById('signup-password')?.value || '';
-  const fullName = document.getElementById('signup-name')?.value || '';
-
-  if (!document.getElementById('terms')?.checked) {
-    showMessage(signupMessageContainer, 'يجب الموافقة على الشروط والأحكام للمتابعة.');
-    setButtonLoading(submitButton, false);
-    return;
-  }
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: fullName,
-      }
-    }
-  });
-
-  if (error) {
-    showMessage(signupMessageContainer, error.message);
-  } else {
-    showMessage(signupMessageContainer, 'تم إنشاء حسابك بنجاح! تحقق من بريدك الإلكتروني لتأكيد حسابك.', 'success');
-    // Store signup success state
-    localStorage.setItem('signupSuccess', 'true');
-    setTimeout(() => {
-      window.location.href = 'login.html';
-    }, 3000);
-  }
-  
-  setButtonLoading(submitButton, false);
-};
-
-// Initialize Password Strength Checker
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==================================================
+    // 1. Supabase Configuration
+    // ==================================================
+    const SUPABASE_URL = 'https://yhfqnfunkmhhxbwtrjns.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloZnFuZnVua21oaHhid3Ryam5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwOTAwODMsImV4cCI6MjA2ODY2NjA4M30.tLLs2S0wqnuJ2H7K5tucFJk3phktsgpMCYa92q0jopc';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ==================================================
+    // 2. DOM Element References (Forms)
+    // ==================================================
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+
+    // ==================================================
+    // 3. Helper Functions
+    // ==================================================
+    const showMessage = (containerId, message, type = 'error') => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+    };
+
+    const setButtonLoading = (form, isLoading) => {
+        const button = form.querySelector('button[type="submit"]');
+        if (button) {
+            if (isLoading) {
+                button.dataset.originalText = button.innerHTML;
+                button.innerHTML = 'جاري...';
+                button.disabled = true;
+            } else {
+                button.innerHTML = button.dataset.originalText;
+                button.disabled = false;
+            }
+        }
+    };
+
+    const validateForm = (form, messageContainerId) => {
+        const inputs = form.querySelectorAll('input[required]');
+        for (const input of inputs) {
+            const inputGroup = input.parentElement;
+            if (input.type === 'checkbox' && !input.checked) {
+                showMessage(messageContainerId, 'يجب الموافقة على شروط الاستخدام للمتابعة.', 'error');
+                return false;
+            }
+            if (!input.value.trim() && input.type !== 'checkbox') {
+                showMessage(messageContainerId, `يرجى ملء حقل "${input.placeholder}".`, 'error');
+                inputGroup.classList.add('error');
+                input.focus();
+                // Remove error style on input change
+                input.addEventListener('input', () => inputGroup.classList.remove('error'), { once: true });
+                return false;
+            }
+            inputGroup.classList.remove('error');
+        }
+        return true;
+    };
+
+    // ==================================================
+    // 4. Feature Initializers
+    // ==================================================
+
+    // --- Password Toggle ---
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent form submission if inside a form
+            const targetId = toggle.getAttribute('data-target');
+            const passwordInput = document.getElementById(targetId);
+            const icon = toggle.querySelector('i');
+            
+            if (!passwordInput || !icon) return; // Guard clause
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                toggle.setAttribute('aria-label', 'إخفاء كلمة المرور');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                toggle.setAttribute('aria-label', 'إظهار كلمة المرور');
+            }
+        });
+    });
+
+    // --- Password Strength Meter ---
     const passwordInput = document.getElementById('signup-password');
     if (passwordInput) {
         passwordInput.addEventListener('input', (e) => {
-            checkPasswordStrength(e.target.value);
+            const password = e.target.value;
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            const meter = document.querySelector('.strength-bars');
+            const text = document.querySelector('.strength-text');
+            if (!meter || !text) return;
+            
+            meter.className = 'strength-bars'; // Reset classes
+            if (password.length > 0) {
+                if (strength === 1) { meter.classList.add('weak'); text.textContent = 'ضعيفة'; }
+                else if (strength === 2) { meter.classList.add('medium'); text.textContent = 'متوسطة'; }
+                else if (strength === 3) { meter.classList.add('strong'); text.textContent = 'قوية'; }
+                else if (strength === 4) { meter.classList.add('very-strong'); text.textContent = 'قوية جداً'; }
+            } else {
+                text.textContent = 'قوة كلمة المرور';
+            }
         });
     }
-});
 
-// ==================================================
-// 5. Initialize
-// ==================================================
-document.addEventListener('DOMContentLoaded', () => {
-  // Setup password toggles
-  // Handle password visibility toggle
-const handlePasswordToggles = () => {
-  document.querySelectorAll('.password-toggle').forEach(toggle => {
-    toggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      const input = document.getElementById(toggle.dataset.target);
-      const icon = toggle.querySelector('i');
-      
-      if (input && icon) {
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
-        } else {
-          input.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
-        }
-      }
-    });
-  });
-};
+    // --- Terms & Conditions Modal ---
+    const termsModal = document.getElementById('terms-modal');
+    const showTermsBtn = document.getElementById('show-terms-btn');
+    const closeTermsBtn = document.getElementById('close-terms-btn');
+    const acceptTermsBtn = document.getElementById('accept-terms-btn');
+    if (termsModal && showTermsBtn && closeTermsBtn && acceptTermsBtn) {
+        const toggleModal = (show) => {
+            if (show) termsModal.style.display = 'flex';
+            else termsModal.style.display = 'none';
+        };
+        showTermsBtn.addEventListener('click', (e) => { e.preventDefault(); toggleModal(true); });
+        closeTermsBtn.addEventListener('click', () => toggleModal(false));
+        acceptTermsBtn.addEventListener('click', () => {
+            document.getElementById('terms').checked = true;
+            toggleModal(false);
+        });
+        termsModal.addEventListener('click', (e) => { if (e.target === termsModal) toggleModal(false); });
+    }
+    
+    // ==================================================
+    // 5. Form Handlers
+    // ==================================================
 
-// Initialize password toggles
-handlePasswordToggles();
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm(loginForm, 'login-message-container')) return;
+            setButtonLoading(loginForm, true);
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
-  // Attach form handlers
-  loginForm?.addEventListener('submit', handleLogin);
-  signupForm?.addEventListener('submit', handleSignup);
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                showMessage('login-message-container', 'البريد الإلكتروني أو كلمة المرور غير صحيحة.', 'error');
+            } else {
+                window.location.href = 'home.html';
+            }
+            setButtonLoading(loginForm, false);
+        });
+    }
+
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm(signupForm, 'signup-message-container')) return;
+            setButtonLoading(signupForm, true);
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const fullName = document.getElementById('signup-name').value;
+
+            const { error } = await supabase.auth.signUp({
+                email, password, options: { data: { full_name: fullName } }
+            });
+
+            if (error) {
+                showMessage('signup-message-container', error.message, 'error');
+            } else {
+                showMessage('signup-message-container', 'تم إنشاء حسابك بنجاح! تحقق من بريدك الإلكتروني لتأكيد حسابك.', 'success');
+                setTimeout(() => { signupForm.reset(); }, 3000);
+            }
+            setButtonLoading(signupForm, false);
+        });
+    }
+
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm(forgotPasswordForm, 'forgot-message-container')) return;
+            setButtonLoading(forgotPasswordForm, true);
+            const email = document.getElementById('forgot-email').value;
+
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/reset-password.html`, // You must create this page
+            });
+
+            if (error) {
+                showMessage('forgot-message-container', error.message, 'error');
+            } else {
+                showMessage('forgot-message-container', 'إذا كان البريد الإلكتروني مسجلاً، فسيتم إرسال رابط الاستعادة إليه.', 'success');
+            }
+            setButtonLoading(forgotPasswordForm, false);
+        });
+    }
 });

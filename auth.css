@@ -1,71 +1,463 @@
-/* Modern Auth Page Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* ===================================================================
+   نخبة التعلم - Authentication Stylesheet (v4.0 - Designer's Cut)
+   ===================================================================
+   TABLE OF CONTENTS
+   -------------------------------------------------------------------
+   1.  Root Variables (Design Tokens)
+   2.  Base & Reset Styles
+   3.  Main Layout (Auth Page Wrapper)
+   4.  Component: Branding Side
+   5.  Component: Form Side & Auth Card
+   6.  Component: Input Groups & Fields
+   7.  Component: Buttons & Links
+   8.  Component: Password Strength Meter
+   9.  Component: Social Logins
+   10. Component: Message Containers
+   11. Component: Terms Modal
+   12. Animations & Keyframes
+   13. Responsive Design
+   =================================================================== */
+
+/* 1. Root Variables (Design Tokens)
+/* ============================================= */
+:root {
+  --color-primary: #0059ff;
+  --color-primary-dark: #0045cc;
+  --color-bg: #f4f7fc;
+  --color-white: #ffffff;
+  --color-text-dark: #111827;
+  --color-text-light: #6b7280;
+  --color-border: #d1d5db;
+  --color-error: #ef4444;
+  --color-success: #10b981;
+  --font-main: 'Cairo', sans-serif;
+  --radius-lg: 20px;
+  --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.1);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+/* 2. Base & Reset Styles
+/* ============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text-light);
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* 3. Main Layout (Auth Page Wrapper)
+/* ============================================= */
+.auth-page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* 4. Component: Branding Side
+/* ============================================= */
+.auth-branding {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.auth-branding .logo {
+  color: var(--color-white);
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.auth-branding .logo img {
+  height: 40px;
+  width: auto;
+}
+.branding-content {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+.branding-content h2 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.branding-content p {
+  font-size: 1.25rem;
+  opacity: 0.8;
+  max-width: 400px;
+}
+.branding-bg {
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  animation: pulse 10s infinite ease-in-out;
+}
+
+/* 5. Component: Form Side & Auth Card
+/* ============================================= */
+.auth-form-wrapper {
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
 .auth-card {
-    animation: fadeInUp 0.8s ease-out;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeInUp 0.8s ease-out;
+}
+.auth-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-text-dark);
+  margin-bottom: 0.5rem;
+}
+.auth-subtitle {
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
 }
 
-.auth-logo {
-    animation: fadeInUp 0.8s ease-out 0.2s both;
+/* 6. Component: Input Groups & Fields
+/* ============================================= */
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.input-group input {
+  width: 100%;
+  height: 56px;
+  padding: 0 50px 0 50px; /* Right padding for icon, Left for toggle */
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  background-color: var(--color-white);
+  transition: var(--transition);
+}
+.input-group input::placeholder {
+  color: var(--color-text-light);
+  opacity: 1;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(0, 89, 255, 0.1);
+  background-color: var(--color-white);
+}
+.input-group.error input {
+  border-color: var(--color-error);
+}
+.input-group.error .input-icon {
+  color: var(--color-error);
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: var(--color-text-light);
+  transition: var(--transition);
+  pointer-events: none;
+}
+.input-group input:focus ~ .input-icon {
+  color: var(--color-primary);
+}
+.password-toggle {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+.password-toggle:hover {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
 }
 
-.auth-card h1 {
-    animation: fadeInUp 0.8s ease-out 0.4s both;
+/* Floating label effect */
+.input-group.floating-label {
+  margin-bottom: 2rem;
+}
+.input-group.floating-label label {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-light);
+  transition: all var(--transition);
+  pointer-events: none;
+  background-color: var(--color-white);
+  padding: 0 5px;
+  border-radius: 4px;
+}
+.input-group.floating-label input:focus + label,
+.input-group.floating-label input:not(:placeholder-shown) + label {
+  top: 0;
+  transform: translateY(-50%) scale(0.85);
+  color: var(--color-primary);
 }
 
-.auth-card p {
-    animation: fadeInUp 0.8s ease-out 0.6s both;
+/* Enhanced password strength meter */
+.password-strength-meter {
+  margin: -1rem 0 1.5rem 0;
 }
-
-.auth-form {
-    animation: fadeInUp 0.8s ease-out 0.8s both;
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  height: 5px;
+  border-radius: 5px;
+  overflow: hidden;
 }
-
-/* Enhanced Input Focus Effects */
-.floating-label input:focus {
-    box-shadow: 0 4px 20px rgba(0, 89, 255, 0.15);
-}
-
-/* Loading State Animation */
-.btn-loading::after {
-    animation: shimmer 2s infinite linear;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
-    background-size: 200% 100%;
-    content: '';
-    position: absolute;
-    inset: 0;
-}
-
-/* Password Strength Indicator Animation */
 .strength-bars span {
-    transition: width 0.3s ease, background-color 0.3s ease;
+  flex: 1;
+  background-color: #e5e7eb;
+  transition: var(--transition);
+}
+.strength-bars.weak span:nth-child(1) { background-color: #fca5a5; }
+.strength-bars.medium span:nth-child(-n+2) { background-color: #fdba74; }
+.strength-bars.strong span:nth-child(-n+3) { background-color: #86efac; }
+.strength-bars.very-strong span { background-color: var(--color-success); }
+.strength-text {
+  font-size: 0.8rem;
+  text-align: right;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+.form-check { padding-right: 1.75rem; }
+.form-check-input {
+    float: right;
+    margin-right: -1.75rem;
+    width: 1.25em; height: 1.25em;
+    border: 1px solid var(--color-border);
+}
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.form-check-input:focus {
+    box-shadow: 0 0 0 4px rgba(0, 89, 255, 0.1);
 }
 
-/* Social Button Hover Effects */
-.social-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 89, 255, 0.1);
+/* 7. Component: Buttons & Links
+/* ============================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: var(--transition);
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+.btn-main {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(0, 89, 255, 0.25);
+}
+.btn-main:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(0, 89, 255, 0.3);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.form-link {
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+.form-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+.form-link.small {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.auth-links {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* 8. Component: Password Strength Meter
+/* ============================================= */
+.password-strength-meter {
+  margin: -1rem 0 1.5rem 0;
+}
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  height: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.strength-bars span {
+  flex: 1;
+  background-color: #e5e7eb;
+  transition: var(--transition);
+}
+.strength-bars.weak span:nth-child(1) { background-color: #fca5a5; }
+.strength-bars.medium span:nth-child(-n+2) { background-color: #fdba74; }
+.strength-bars.strong span:nth-child(-n+3) { background-color: #86efac; }
+.strength-bars.very-strong span { background-color: var(--color-success); }
+.strength-text {
+  font-size: 0.8rem;
+  text-align: right;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* 9. Component: Social Logins
+/* ============================================= */
+.social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2rem 0;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+}
+.social-divider::before, .social-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+.social-divider:not(:empty)::before { margin-left: .5em; }
+.social-divider:not(:empty)::after { margin-right: .5em; }
+.social-buttons {
+  display: flex;
+  gap: 1rem;
+}
+.btn-social {
+  flex: 1;
+  background-color: var(--color-white);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+.btn-social:hover {
+  background-color: #f9fafb;
+  border-color: #adb5bd;
+  transform: translateY(-2px);
+}
+
+/* 10. Component: Message Containers
+/* ============================================= */
+.message-container {
+  min-height: 48px;
+  margin-bottom: 1rem;
+}
+.message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+.message.error { background-color: #fee2e2; color: #b91c1c; }
+.message.success { background-color: #dcfce7; color: #166534; }
+
+/* 11. Component: Terms Modal
+/* ============================================= */
+.terms-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.6);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.terms-modal-content {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  animation: modalFadeIn 0.3s ease-out;
+}
+.terms-modal-close {
+  position: absolute; top: 1rem; left: 1rem; background: none; border: none;
+  color: var(--color-text-light); width: 32px; height: 32px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.terms-modal-close:hover { background: var(--color-bg); color: var(--color-text-dark); }
+.terms-modal h2 { color: var(--color-primary); font-weight: 900; margin-bottom: 1.5rem; }
+.terms-modal h4 { color: var(--color-text-dark); font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.terms-modal ul { padding-right: 1.5rem; }
+.terms-modal li { margin-bottom: 0.5rem; }
+
+/* 12. Animations & Keyframes
+/* ============================================= */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.05; }
+  50% { transform: scale(1.5); opacity: 0.1; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 13. Responsive Design
+/* ============================================= */
+@media (max-width: 992px) {
+  .auth-page-wrapper { grid-template-columns: 1fr; }
+  .auth-branding { display: none; }
+  .auth-form-wrapper { padding: 20px; }
 }
